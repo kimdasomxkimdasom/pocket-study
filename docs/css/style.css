@@ -84,6 +84,10 @@ body {
   font-weight: 600;
 }
 
+.menu-card.full-width {
+  grid-column: 1 / -1;
+}
+
 /* 버튼 */
 .btn {
   padding: 12px 20px;
@@ -150,6 +154,22 @@ body {
   font-size: 12px;
   color: var(--text-sub);
   white-space: nowrap;
+}
+
+.card-item-back.spoiler {
+  color: transparent;
+  background: var(--bg);
+  border-radius: 4px;
+  display: inline-block;
+  padding: 2px 8px;
+  user-select: none;
+  transition: color 0.3s, background 0.3s;
+}
+
+.card-item-back.spoiler.revealed {
+  color: var(--text-sub);
+  background: transparent;
+  padding: 0;
 }
 
 .card-item-example {

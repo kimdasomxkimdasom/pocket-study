@@ -19,5 +19,229 @@
     "back": "그건 나중에 다시 말씀드릴게요.",
     "example": "A: What's the budget for this project?\nB: Let me get back to you on that.",
     "sub": "비즈니스"
+  },
+  {
+    "id": 4,
+    "front": "How's it going?",
+    "back": "어떻게 지내?",
+    "example": "A: Hey! How's it going?\nB: Not bad, how about you?",
+    "sub": "인사"
+  },
+  {
+    "id": 5,
+    "front": "What do you do for a living?",
+    "back": "직업이 뭐예요?",
+    "example": "A: What do you do for a living?\nB: I'm a software developer.",
+    "sub": "소개"
+  },
+  {
+    "id": 6,
+    "front": "Do you mind if I sit here?",
+    "back": "여기 앉아도 될까요?",
+    "example": "A: Do you mind if I sit here?\nB: Not at all, go ahead.",
+    "sub": "허락"
+  },
+  {
+    "id": 7,
+    "front": "I'm running a bit late.",
+    "back": "좀 늦을 것 같아.",
+    "example": "A: Where are you?\nB: Sorry, I'm running a bit late. Be there in 10.",
+    "sub": "일상"
+  },
+  {
+    "id": 8,
+    "front": "It's on the tip of my tongue.",
+    "back": "입 끝에서 맴도는데 (생각이 안 나).",
+    "example": "A: What's that actor's name?\nB: Oh, it's on the tip of my tongue...",
+    "sub": "일상"
+  },
+  {
+    "id": 9,
+    "front": "Let's grab a bite to eat.",
+    "back": "간단하게 뭐 좀 먹자.",
+    "example": "A: I'm starving.\nB: Let's grab a bite to eat nearby.",
+    "sub": "식사"
+  },
+  {
+    "id": 10,
+    "front": "I'll keep that in mind.",
+    "back": "기억해둘게요.",
+    "example": "A: Make sure to save your work frequently.\nB: Thanks, I'll keep that in mind.",
+    "sub": "일상"
+  },
+  {
+    "id": 11,
+    "front": "That makes sense.",
+    "back": "그거 이해가 되네요. / 일리가 있네요.",
+    "example": "A: We should deploy on Monday when traffic is low.\nB: That makes sense.",
+    "sub": "동의"
+  },
+  {
+    "id": 12,
+    "front": "I didn't catch that. Could you say it again?",
+    "back": "못 들었어요. 다시 말해줄 수 있어요?",
+    "example": "A: The meeting is at blah blah...\nB: Sorry, I didn't catch that. Could you say it again?",
+    "sub": "되묻기"
+  },
+  {
+    "id": 13,
+    "front": "It slipped my mind.",
+    "back": "깜빡했어요.",
+    "example": "A: Did you send the email?\nB: Oh no, it totally slipped my mind.",
+    "sub": "일상"
+  },
+  {
+    "id": 14,
+    "front": "I'm looking forward to it.",
+    "back": "기대하고 있어요.",
+    "example": "A: We're having a team dinner on Friday.\nB: Sounds great! I'm looking forward to it.",
+    "sub": "일상"
+  },
+  {
+    "id": 15,
+    "front": "Let me think about it.",
+    "back": "좀 생각해볼게요.",
+    "example": "A: Do you want to join the new project?\nB: Let me think about it and get back to you.",
+    "sub": "보류"
+  },
+  {
+    "id": 16,
+    "front": "Sorry, something came up.",
+    "back": "미안, 갑자기 일이 생겼어.",
+    "example": "A: Are we still on for tonight?\nB: Sorry, something came up. Can we reschedule?",
+    "sub": "취소"
+  },
+  {
+    "id": 17,
+    "front": "What are you up to this weekend?",
+    "back": "이번 주말에 뭐 해?",
+    "example": "A: What are you up to this weekend?\nB: Nothing much, probably just staying in.",
+    "sub": "일상"
+  },
+  {
+    "id": 18,
+    "front": "I'm not really into that.",
+    "back": "나 그건 별로야.",
+    "example": "A: Do you want to go hiking?\nB: I'm not really into that. How about a movie?",
+    "sub": "거절"
+  },
+  {
+    "id": 19,
+    "front": "You can say that again.",
+    "back": "완전 동감이야.",
+    "example": "A: This traffic is terrible.\nB: You can say that again.",
+    "sub": "동의"
+  },
+  {
+    "id": 20,
+    "front": "Bear with me for a moment.",
+    "back": "잠시만 기다려주세요.",
+    "example": "A: When will the report be ready?\nB: Bear with me for a moment, I'm almost done.",
+    "sub": "비즈니스"
+  },
+  {
+    "id": 21,
+    "front": "It's no big deal.",
+    "back": "별거 아니야.",
+    "example": "A: I'm so sorry I forgot your birthday.\nB: It's no big deal, don't worry about it.",
+    "sub": "일상"
+  },
+  {
+    "id": 22,
+    "front": "I'm kind of busy right now.",
+    "back": "지금 좀 바빠.",
+    "example": "A: Can you help me move this?\nB: I'm kind of busy right now. Maybe later?",
+    "sub": "거절"
+  },
+  {
+    "id": 23,
+    "front": "Let's call it a day.",
+    "back": "오늘은 이만 하자.",
+    "example": "A: It's already 7 PM.\nB: Yeah, let's call it a day.",
+    "sub": "일상"
+  },
+  {
+    "id": 24,
+    "front": "I'll figure it out.",
+    "back": "내가 알아서 할게.",
+    "example": "A: Do you need help with the setup?\nB: No thanks, I'll figure it out.",
+    "sub": "일상"
+  },
+  {
+    "id": 25,
+    "front": "What's the catch?",
+    "back": "뭐가 함정이야? / 조건이 뭐야?",
+    "example": "A: I'll buy you lunch today.\nB: Really? What's the catch?",
+    "sub": "일상"
+  },
+  {
+    "id": 26,
+    "front": "I could use some help.",
+    "back": "도움이 좀 필요해.",
+    "example": "A: How's the project going?\nB: Not great. I could use some help.",
+    "sub": "요청"
+  },
+  {
+    "id": 27,
+    "front": "That rings a bell.",
+    "back": "어디서 들어본 것 같아.",
+    "example": "A: Do you know someone named Kevin?\nB: Hmm, that rings a bell.",
+    "sub": "일상"
+  },
+  {
+    "id": 28,
+    "front": "I'm on my way.",
+    "back": "지금 가는 중이야.",
+    "example": "A: Where are you? The movie starts in 10 minutes.\nB: I'm on my way!",
+    "sub": "일상"
+  },
+  {
+    "id": 29,
+    "front": "It's up to you.",
+    "back": "너한테 달렸어. / 네가 정해.",
+    "example": "A: Should we eat Korean or Japanese?\nB: It's up to you. I'm fine with either.",
+    "sub": "일상"
+  },
+  {
+    "id": 30,
+    "front": "I'm just browsing, thanks.",
+    "back": "그냥 구경하는 거예요, 감사합니다.",
+    "example": "A: Can I help you find anything?\nB: I'm just browsing, thanks.",
+    "sub": "쇼핑"
+  },
+  {
+    "id": 31,
+    "front": "Can I get a rain check?",
+    "back": "다음에 해도 될까?",
+    "example": "A: Want to grab dinner tonight?\nB: I'm exhausted. Can I get a rain check?",
+    "sub": "일상"
+  },
+  {
+    "id": 32,
+    "front": "Long time no see!",
+    "back": "오랜만이야!",
+    "example": "A: Hey! Long time no see!\nB: I know, right? It's been ages!",
+    "sub": "인사"
+  },
+  {
+    "id": 33,
+    "front": "I'm swamped with work.",
+    "back": "일이 너무 밀려있어.",
+    "example": "A: Want to hang out this week?\nB: I wish, but I'm swamped with work.",
+    "sub": "일상"
+  },
+  {
+    "id": 34,
+    "front": "Hang on a second.",
+    "back": "잠깐만.",
+    "example": "A: Can you come here?\nB: Hang on a second, I'm almost done.",
+    "sub": "일상"
+  },
+  {
+    "id": 35,
+    "front": "I don't feel like it.",
+    "back": "그럴 기분이 아니야.",
+    "example": "A: Let's go for a run.\nB: I don't feel like it today.",
+    "sub": "거절"
   }
 ]

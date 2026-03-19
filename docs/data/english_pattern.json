@@ -19,5 +19,229 @@
     "back": "결국 ~하게 되었다",
     "example": "I ended up staying up all night.",
     "sub": "결과"
+  },
+  {
+    "id": 4,
+    "front": "I'm used to ~ing",
+    "back": "~하는 것에 익숙하다",
+    "example": "I'm used to waking up early.",
+    "sub": "습관"
+  },
+  {
+    "id": 5,
+    "front": "I used to ~",
+    "back": "(과거에) ~하곤 했다",
+    "example": "I used to play soccer every weekend.",
+    "sub": "과거"
+  },
+  {
+    "id": 6,
+    "front": "How come ~?",
+    "back": "어째서 ~인 거야? (Why보다 캐주얼)",
+    "example": "How come you didn't come to the party?",
+    "sub": "질문"
+  },
+  {
+    "id": 7,
+    "front": "I was wondering if ~",
+    "back": "혹시 ~인지 궁금한데요 (공손한 요청)",
+    "example": "I was wondering if you could help me with this.",
+    "sub": "요청"
+  },
+  {
+    "id": 8,
+    "front": "It depends on ~",
+    "back": "~에 따라 다르다",
+    "example": "It depends on the situation.",
+    "sub": "조건"
+  },
+  {
+    "id": 9,
+    "front": "I'm thinking of ~ing",
+    "back": "~할까 생각 중이야",
+    "example": "I'm thinking of changing my job.",
+    "sub": "계획"
+  },
+  {
+    "id": 10,
+    "front": "There's no point in ~ing",
+    "back": "~해봤자 소용없다",
+    "example": "There's no point in arguing about it.",
+    "sub": "평가"
+  },
+  {
+    "id": 11,
+    "front": "I can't help ~ing",
+    "back": "~하지 않을 수 없다",
+    "example": "I can't help laughing every time I see that video.",
+    "sub": "감정"
+  },
+  {
+    "id": 12,
+    "front": "Feel free to ~",
+    "back": "편하게 ~하세요",
+    "example": "Feel free to ask me anything.",
+    "sub": "허락"
+  },
+  {
+    "id": 13,
+    "front": "I'm supposed to ~",
+    "back": "~하기로 되어 있다",
+    "example": "I'm supposed to meet him at 3.",
+    "sub": "예정"
+  },
+  {
+    "id": 14,
+    "front": "It turns out (that) ~",
+    "back": "알고 보니 ~이더라",
+    "example": "It turns out he was right all along.",
+    "sub": "발견"
+  },
+  {
+    "id": 15,
+    "front": "I might as well ~",
+    "back": "~하는 게 낫겠다 / 그냥 ~할래",
+    "example": "Since I'm already here, I might as well stay.",
+    "sub": "판단"
+  },
+  {
+    "id": 16,
+    "front": "Would you mind ~ing?",
+    "back": "~해주시겠어요? (공손한 부탁)",
+    "example": "Would you mind closing the window?",
+    "sub": "요청"
+  },
+  {
+    "id": 17,
+    "front": "I have no idea ~",
+    "back": "~을 전혀 모르겠어",
+    "example": "I have no idea what he's talking about.",
+    "sub": "일상"
+  },
+  {
+    "id": 18,
+    "front": "The thing is ~",
+    "back": "사실은 ~ / 문제는 ~",
+    "example": "The thing is, I don't have enough time.",
+    "sub": "설명"
+  },
+  {
+    "id": 19,
+    "front": "I'm having trouble ~ing",
+    "back": "~하는 데 어려움을 겪고 있다",
+    "example": "I'm having trouble connecting to the Wi-Fi.",
+    "sub": "문제"
+  },
+  {
+    "id": 20,
+    "front": "It takes ~ to ...",
+    "back": "...하려면 ~이 걸리다 / 필요하다",
+    "example": "It takes about 30 minutes to get there.\nIt takes courage to speak up.",
+    "sub": "시간"
+  },
+  {
+    "id": 21,
+    "front": "I'd rather ~ (than ...)",
+    "back": "차라리 ~하겠다 (...하느니)",
+    "example": "I'd rather stay home than go out in this rain.",
+    "sub": "선호"
+  },
+  {
+    "id": 22,
+    "front": "as long as ~",
+    "back": "~하기만 하면, ~하는 한",
+    "example": "You can borrow it as long as you return it by Friday.",
+    "sub": "조건"
+  },
+  {
+    "id": 23,
+    "front": "I'm not sure if ~",
+    "back": "~인지 잘 모르겠어",
+    "example": "I'm not sure if this is the right way.",
+    "sub": "불확실"
+  },
+  {
+    "id": 24,
+    "front": "It's been a while since ~",
+    "back": "~한 지 꽤 됐다",
+    "example": "It's been a while since I last exercised.",
+    "sub": "시간"
+  },
+  {
+    "id": 25,
+    "front": "I wish I could ~",
+    "back": "~할 수 있으면 좋겠다 (아쉬움)",
+    "example": "I wish I could speak English fluently.",
+    "sub": "감정"
+  },
+  {
+    "id": 26,
+    "front": "What if ~?",
+    "back": "만약 ~하면 어떡해? / ~하면 어떨까?",
+    "example": "What if it rains tomorrow?\nWhat if we try a different approach?",
+    "sub": "가정"
+  },
+  {
+    "id": 27,
+    "front": "I'm getting used to ~",
+    "back": "~에 점점 익숙해지고 있다",
+    "example": "I'm getting used to the new schedule.",
+    "sub": "습관"
+  },
+  {
+    "id": 28,
+    "front": "There's no way ~",
+    "back": "~할 리가 없다 / 절대 ~못해",
+    "example": "There's no way I can finish this by tomorrow.",
+    "sub": "불가능"
+  },
+  {
+    "id": 29,
+    "front": "Do you happen to ~?",
+    "back": "혹시 ~하세요? (조심스러운 질문)",
+    "example": "Do you happen to know where the post office is?",
+    "sub": "질문"
+  },
+  {
+    "id": 30,
+    "front": "I should have + p.p.",
+    "back": "~했어야 했는데 (후회)",
+    "example": "I should have studied harder for the exam.",
+    "sub": "후회"
+  },
+  {
+    "id": 31,
+    "front": "No wonder ~",
+    "back": "~한 게 당연하지 / 어쩐지",
+    "example": "No wonder you're tired. You've been working all day.",
+    "sub": "이해"
+  },
+  {
+    "id": 32,
+    "front": "I can't wait to ~",
+    "back": "빨리 ~하고 싶어 (기대)",
+    "example": "I can't wait to see you this weekend!",
+    "sub": "감정"
+  },
+  {
+    "id": 33,
+    "front": "It's not like ~",
+    "back": "~인 것도 아니잖아",
+    "example": "It's not like I don't want to go. I'm just too tired.",
+    "sub": "해명"
+  },
+  {
+    "id": 34,
+    "front": "I'm in the middle of ~",
+    "back": "지금 ~하는 중이야",
+    "example": "I'm in the middle of cooking. Can I call you back?",
+    "sub": "상태"
+  },
+  {
+    "id": 35,
+    "front": "How about ~ing?",
+    "back": "~하는 거 어때?",
+    "example": "How about ordering pizza tonight?",
+    "sub": "제안"
   }
 ]

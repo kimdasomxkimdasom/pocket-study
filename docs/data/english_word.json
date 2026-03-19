@@ -19,5 +19,110 @@
     "back": "회복력 있는, 탄력 있는",
     "example": "Children are often more resilient than adults.",
     "sub": "일반"
+  },
+  {
+    "id": 4,
+    "front": "deploy",
+    "back": "배포하다",
+    "example": "We need to deploy the new version to production.",
+    "sub": "개발"
+  },
+  {
+    "id": 5,
+    "front": "deprecated",
+    "back": "더 이상 사용되지 않는, 권장하지 않는",
+    "example": "This method is deprecated. Use the new API instead.",
+    "sub": "개발"
+  },
+  {
+    "id": 6,
+    "front": "refactor",
+    "back": "리팩토링하다 (기능 변경 없이 코드 구조 개선)",
+    "example": "Let's refactor this module before adding new features.",
+    "sub": "개발"
+  },
+  {
+    "id": 7,
+    "front": "scalable",
+    "back": "확장 가능한",
+    "example": "We need a scalable architecture to handle more traffic.",
+    "sub": "개발"
+  },
+  {
+    "id": 8,
+    "front": "latency",
+    "back": "지연 시간",
+    "example": "The API latency is too high. We should optimize the query.",
+    "sub": "개발"
+  },
+  {
+    "id": 9,
+    "front": "throughput",
+    "back": "처리량",
+    "example": "The system throughput increased after the optimization.",
+    "sub": "개발"
+  },
+  {
+    "id": 10,
+    "front": "idempotent",
+    "back": "멱등의 (여러 번 실행해도 결과가 같은)",
+    "example": "PUT requests should be idempotent.",
+    "sub": "개발"
+  },
+  {
+    "id": 11,
+    "front": "boilerplate",
+    "back": "반복적으로 사용되는 표준 코드",
+    "example": "Spring has a lot of boilerplate code.",
+    "sub": "개발"
+  },
+  {
+    "id": 12,
+    "front": "regression",
+    "back": "회귀 (기존 기능이 깨지는 것)",
+    "example": "We found a regression bug after the last release.",
+    "sub": "개발"
+  },
+  {
+    "id": 13,
+    "front": "verbose",
+    "back": "장황한, 상세한",
+    "example": "Java is more verbose than Python.",
+    "sub": "개발"
+  },
+  {
+    "id": 14,
+    "front": "immutable",
+    "back": "불변의, 변경할 수 없는",
+    "example": "Strings in Java are immutable.",
+    "sub": "개발"
+  },
+  {
+    "id": 15,
+    "front": "concurrent",
+    "back": "동시에 발생하는, 병행의",
+    "example": "We need to handle concurrent requests safely.",
+    "sub": "개발"
+  },
+  {
+    "id": 16,
+    "front": "middleware",
+    "back": "미들웨어 (요청과 응답 사이에서 동작하는 소프트웨어)",
+    "example": "Add an authentication middleware to protect the endpoint.",
+    "sub": "개발"
+  },
+  {
+    "id": 17,
+    "front": "payload",
+    "back": "전송 데이터, 페이로드",
+    "example": "The request payload exceeds the maximum size.",
+    "sub": "개발"
+  },
+  {
+    "id": 18,
+    "front": "bottleneck",
+    "back": "병목 (지점)",
+    "example": "The database query is the bottleneck of this feature.",
+    "sub": "개발"
   }
 ]
