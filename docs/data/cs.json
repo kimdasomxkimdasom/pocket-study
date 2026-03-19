@@ -2,8 +2,8 @@
   {
     "id": 1,
     "front": "HTTP와 HTTPS의 차이점은?",
-    "back": "HTTPS는 SSL/TLS 암호화가 추가된 HTTP. 데이터를 암호화하여 전송하므로 보안이 강화됨.",
-    "example": "",
+    "back": "HTTPS = HTTP + SSL/TLS 암호화\n1) HTTP: 평문 전송, 포트 80\n2) HTTPS: 암호화 전송, 포트 443\nSSL 인증서로 서버 신원 확인 + 데이터 암호화 + 무결성 보장",
+    "example": "HTTPS 통신 과정:\n1) TCP 연결\n2) SSL/TLS 핸드셰이크 (인증서 교환, 대칭키 생성)\n3) 대칭키로 암호화 통신",
     "sub": "네트워크"
   },
   {
@@ -103,5 +103,208 @@
     "back": "가중치가 있는 그래프에서 하나의 시작점으로부터 모든 노드까지의 최단 경로를 구하는 알고리즘. 음수 가중치 불가.",
     "example": "우선순위 큐(힙) 사용, O(E log V)\n음수 가중치가 있으면 벨만-포드 사용",
     "sub": "알고리즘"
+  },
+  {
+    "id": 16,
+    "front": "GET과 POST 방식의 차이점은?",
+    "back": "GET: 데이터를 URL 쿼리스트링에 포함. 캐시 가능. 길이 제한. 북마크 가능. 멱등(idempotent).\nPOST: 데이터를 HTTP Body에 포함. 캐시 불가. 길이 제한 없음. 북마크 불가. 비멱등.",
+    "example": "GET: 조회 요청 (검색, 목록)\n→ GET /users?page=1&size=10\n\nPOST: 생성/변경 요청 (회원가입, 로그인)\n→ POST /users Body: {name: 'Kim'}\n\n보안 차이: GET은 URL에 데이터 노출, POST는 Body에 담지만 HTTPS 없이는 둘 다 평문 전송",
+    "sub": "네트워크"
+  },
+  {
+    "id": 17,
+    "front": "TCP 3-way Handshake란?",
+    "back": "TCP 연결 수립 과정. 3단계로 양쪽이 준비됨을 확인.\n1) SYN: 클라이언트 → 서버 (연결 요청)\n2) SYN+ACK: 서버 → 클라이언트 (요청 수락 + 연결 요청)\n3) ACK: 클라이언트 → 서버 (수락 확인)",
+    "example": "연결 해제는 4-way Handshake:\n1) FIN → 2) ACK → 3) FIN → 4) ACK\n\n왜 3-way인가?\n→ 양쪽 모두 데이터를 보내고 받을 수 있는지 확인해야 하므로\n→ 2-way면 서버가 클라이언트의 수신 가능 여부를 모름",
+    "sub": "네트워크"
+  },
+  {
+    "id": 18,
+    "front": "TCP와 UDP의 차이점은?",
+    "back": "TCP: 연결형, 신뢰성 보장, 순서 보장, 흐름/혼잡 제어. 느림.\nUDP: 비연결형, 신뢰성 없음, 순서 보장 없음, 제어 없음. 빠름.",
+    "example": "TCP 사용: HTTP, FTP, 이메일 → 데이터 정확성이 중요\nUDP 사용: DNS, 스트리밍, 게임, VoIP → 속도가 중요\n\nTCP 헤더: 20바이트 이상\nUDP 헤더: 8바이트 (가벼움)",
+    "sub": "네트워크"
+  },
+  {
+    "id": 19,
+    "front": "HTTP의 문제점들은?",
+    "back": "1) 평문 통신: 도청 가능 (패킷 스니핑)\n2) 통신 상대 미확인: 위장/사칭 가능 (피싱)\n3) 무결성 미보장: 중간에 데이터 변조 가능 (MITM 공격)\n4) Stateless: 상태 유지 불가 (쿠키/세션으로 보완)\n5) HOL Blocking: 앞 요청이 느리면 뒤 요청도 지연",
+    "example": "해결책:\n1~3) HTTPS (SSL/TLS 암호화)\n4) 쿠키, 세션, JWT 토큰\n5) HTTP/2 멀티플렉싱, HTTP/3 QUIC(UDP 기반)",
+    "sub": "네트워크"
+  },
+  {
+    "id": 20,
+    "front": "DNS Round Robin 방식이란?",
+    "back": "하나의 도메인에 여러 IP를 등록하고, DNS 요청마다 IP 순서를 바꿔서 응답하는 로드 밸런싱 방식.\n별도 로드밸런서 장비 없이 트래픽 분산 가능.",
+    "example": "example.com → [1.1.1.1, 2.2.2.2, 3.3.3.3]\n1번째 요청: 1.1.1.1 응답\n2번째 요청: 2.2.2.2 응답\n3번째 요청: 3.3.3.3 응답\n\n단점:\n1) 서버 장애 감지 불가 (죽은 서버에도 분배)\n2) 균등 분배 보장 안 됨 (DNS 캐싱 때문)\n3) 서버별 성능 차이 고려 불가\n→ 실무에서는 L4/L7 로드밸런서나 Nginx 사용",
+    "sub": "네트워크"
+  },
+  {
+    "id": 21,
+    "front": "웹 통신의 큰 흐름 (브라우저에 URL 입력 시)",
+    "back": "1) URL 파싱 (프로토콜, 도메인, 경로 분리)\n2) DNS 조회 (도메인 → IP 주소 변환)\n3) TCP 3-way Handshake (연결 수립)\n4) HTTPS면 SSL/TLS Handshake (암호화 설정)\n5) HTTP 요청 전송 (GET /index.html)\n6) 서버 처리 후 HTTP 응답 반환 (HTML)\n7) 브라우저 렌더링 (HTML 파싱 → DOM 트리 → CSSOM → 렌더 트리 → 페인트)",
+    "example": "DNS 조회 순서:\n브라우저 캐시 → OS 캐시 → 라우터 캐시 → ISP DNS → 루트 DNS → TLD DNS → 권한 DNS\n\n브라우저 렌더링 상세:\n1) HTML → DOM 트리\n2) CSS → CSSOM 트리\n3) DOM + CSSOM → 렌더 트리\n4) Layout (위치/크기 계산)\n5) Paint (화면에 그리기)\n6) Composite (레이어 합성)",
+    "sub": "네트워크"
+  },
+  {
+    "id": 22,
+    "front": "프로세스와 스레드의 차이?",
+    "back": "프로세스: 실행 중인 프로그램의 독립적 단위. 각각 별도의 메모리 공간(Code, Data, Stack, Heap) 할당.\n스레드: 프로세스 내의 실행 흐름 단위. Code, Data, Heap은 공유하고 Stack만 별도.",
+    "example": "프로세스 간 통신: IPC (파이프, 소켓, 공유 메모리)\n스레드 간 통신: 공유 메모리로 직접 접근 (빠르지만 동기화 필요)\n\n크롬: 탭마다 별도 프로세스 (한 탭 죽어도 다른 탭 무사)\nJava: main 스레드 + 여러 워커 스레드",
+    "sub": "운영체제"
+  },
+  {
+    "id": 23,
+    "front": "스케줄러의 종류 (장기/중기/단기)?",
+    "back": "장기 스케줄러 (Job Scheduler): 디스크 → 메모리로 프로세스 적재 결정. 멀티프로그래밍 정도 제어. (현대 OS에서는 거의 없음)\n\n중기 스케줄러 (Swapper): 메모리 부족 시 프로세스를 디스크로 스왑 아웃. 멀티프로그래밍 정도 완화.\n\n단기 스케줄러 (CPU Scheduler): Ready 큐에서 어떤 프로세스에 CPU를 줄지 결정. 매우 빈번하게 호출 (ms 단위).",
+    "example": "프로세스 상태 전이:\nNew →(장기)→ Ready →(단기)→ Running → Terminated\nRunning →(인터럽트)→ Ready\nRunning →(I/O)→ Waiting → Ready\nReady ←→(중기, swap)←→ Suspended",
+    "sub": "운영체제"
+  },
+  {
+    "id": 24,
+    "front": "CPU 스케줄링 알고리즘: FCFS, SJF, SRT?",
+    "back": "FCFS (First Come First Served): 먼저 도착한 순서대로 처리. 비선점. 단순하지만 Convoy Effect 발생.\n\nSJF (Shortest Job First): 실행 시간이 짧은 프로세스 우선. 비선점. 평균 대기 시간 최소. 기아(Starvation) 문제.\n\nSRT (Shortest Remaining Time): SJF의 선점 버전. 남은 시간이 더 짧은 프로세스가 오면 CPU 빼앗김.",
+    "example": "Convoy Effect: CPU 작업이 긴 프로세스 뒤에 짧은 프로세스들이 줄줄이 대기\n\nStarvation: 실행 시간이 긴 프로세스가 영원히 실행 안 됨\n→ 해결: Aging (대기 시간에 따라 우선순위 올려줌)",
+    "sub": "운영체제"
+  },
+  {
+    "id": 25,
+    "front": "CPU 스케줄링 알고리즘: Priority, Round Robin?",
+    "back": "Priority Scheduling: 우선순위가 높은 프로세스 먼저 실행. 선점/비선점 모두 가능. Starvation 문제 → Aging으로 해결.\n\nRound Robin (RR): 각 프로세스에 동일한 Time Quantum(시간 할당량) 부여. 시간 초과 시 Ready 큐 맨 뒤로. 선점형.",
+    "example": "RR Time Quantum 설정:\n너무 크면 → FCFS와 같아짐\n너무 작으면 → Context Switch 오버헤드 증가\n보통 10~100ms\n\n현대 OS: 멀티레벨 큐 + 피드백 방식 (우선순위별 다른 큐, 큐마다 다른 알고리즘)",
+    "sub": "운영체제"
+  },
+  {
+    "id": 26,
+    "front": "동기(Synchronous)와 비동기(Asynchronous)의 차이?",
+    "back": "동기: 작업을 순서대로 실행. A 끝나야 B 시작. 호출한 쪽이 결과를 직접 기다림.\n비동기: 작업 완료를 기다리지 않고 다음 작업 진행. 결과는 콜백/이벤트/Promise로 받음.\n\n+ Blocking vs Non-blocking:\nBlocking: 호출된 함수가 완료될 때까지 제어권 안 돌려줌\nNon-blocking: 호출된 함수가 즉시 제어권 반환",
+    "example": "동기+Blocking: Java의 일반 파일 읽기\n동기+Non-blocking: 드물지만 폴링 방식\n비동기+Non-blocking: Node.js I/O, JS fetch()\n비동기+Blocking: 드물지만 select() 시스템콜",
+    "sub": "운영체제"
+  },
+  {
+    "id": 27,
+    "front": "멀티스레드의 장점과 단점?",
+    "back": "장점:\n1) 응답성: 한 스레드가 블락되어도 다른 스레드 실행 가능\n2) 자원 공유: 프로세스 내 메모리 공유 → IPC보다 효율적\n3) 경제성: 프로세스 생성보다 스레드 생성이 가볍다\n4) 멀티코어 활용: 병렬 처리로 성능 향상\n\n단점:\n1) 동기화 문제: 공유 자원 접근 시 Race Condition\n2) 디버깅 어려움: 실행 순서 비결정적\n3) 하나의 스레드 문제가 전체 프로세스에 영향",
+    "example": "Java: synchronized 키워드, ReentrantLock\nPython: GIL 때문에 CPU 바운드 작업은 멀티프로세싱 권장\nGo: goroutine + channel (CSP 모델)",
+    "sub": "운영체제"
+  },
+  {
+    "id": 28,
+    "front": "프로세스 동기화 - Critical Section과 해결책?",
+    "back": "Critical Section (임계 영역): 공유 자원에 접근하는 코드 영역. 동시에 둘 이상 진입하면 안 됨.\n\n해결 조건 3가지:\n1) Mutual Exclusion (상호 배제): 한 번에 하나만 진입\n2) Progress (진행): 임계 영역 비었으면 대기 중인 프로세스 진입 허용\n3) Bounded Waiting (한정 대기): 무한 대기 방지",
+    "example": "해결책:\n1) Mutex (Lock): 잠금/해제로 상호 배제\n2) Semaphore: 카운터로 동시 접근 수 제어 (binary=mutex)\n3) Monitor: 언어 차원 지원 (Java synchronized)\n\nPeterson's Algorithm: 소프트웨어적 해결 (flag + turn)\nHardware: Test-and-Set, Compare-and-Swap (CAS)",
+    "sub": "운영체제"
+  },
+  {
+    "id": 29,
+    "front": "메모리 관리 전략 - 배경과 기법?",
+    "back": "배경: 각 프로세스는 독립된 메모리 공간 필요. 한정된 물리 메모리를 효율적으로 분배해야 함.\n\n기법:\n1) 연속 할당: 각 프로세스를 메모리의 연속 공간에 배치 → 외부 단편화\n2) Paging: 고정 크기(페이지)로 나눠 비연속 배치 → 내부 단편화\n3) Segmentation: 논리적 단위(세그먼트)로 나눠 배치 → 외부 단편화",
+    "example": "외부 단편화: 빈 공간은 있지만 연속되지 않아 할당 불가\n내부 단편화: 할당된 공간 중 사용하지 않는 낭비 영역\n\nPaging 주소 변환:\n논리 주소 = (페이지 번호, 오프셋)\n→ 페이지 테이블로 프레임 번호 변환\n→ 물리 주소 = (프레임 번호, 오프셋)",
+    "sub": "운영체제"
+  },
+  {
+    "id": 30,
+    "front": "Paging과 Segmentation의 차이?",
+    "back": "Paging:\n- 고정 크기 (보통 4KB) 단위로 분할\n- 내부 단편화 발생 가능\n- 페이지 테이블로 주소 변환\n- 프로그래머에게 투명함\n\nSegmentation:\n- 가변 크기 (코드/데이터/스택 등 논리 단위)\n- 외부 단편화 발생 가능\n- 세그먼트 테이블로 주소 변환\n- 논리적 의미 있는 단위",
+    "example": "현대 OS: Paged Segmentation 혼합 사용\n→ 세그먼트를 다시 페이지로 나눔\n→ 논리적 분리 + 외부 단편화 해결\n\nLinux: 사실상 Paging 위주 (세그먼트는 flat 모델)",
+    "sub": "운영체제"
+  },
+  {
+    "id": 31,
+    "front": "가상 메모리란?",
+    "back": "배경: 물리 메모리보다 큰 프로세스를 실행하고 싶음. 여러 프로세스를 동시에 올리고 싶음.\n\n가상 메모리가 하는 일:\n1) 각 프로세스에 독립된 가상 주소 공간 제공\n2) 실제 필요한 페이지만 물리 메모리에 적재\n3) 나머지는 디스크(스왑 영역)에 보관\n4) MMU(Memory Management Unit)가 주소 변환",
+    "example": "32비트 시스템: 프로세스당 4GB 가상 공간\n64비트 시스템: 프로세스당 256TB 가상 공간\n\n실제 물리 메모리가 8GB여도 각 프로세스는 4GB를 쓴다고 \"착각\"",
+    "sub": "운영체제"
+  },
+  {
+    "id": 32,
+    "front": "Demand Paging (요구 페이징)이란?",
+    "back": "프로세스 실행 시 모든 페이지를 메모리에 올리지 않고, 실제로 접근할 때(요구 시) 메모리에 적재하는 방식.\n\nPage Fault 과정:\n1) CPU가 페이지 접근\n2) 페이지 테이블에서 valid/invalid 확인\n3) invalid면 Page Fault 트랩 발생\n4) 디스크에서 해당 페이지를 빈 프레임에 적재\n5) 페이지 테이블 업데이트 (valid로)\n6) 중단됐던 명령어 재실행",
+    "example": "장점: 필요한 것만 올리니 메모리 절약, 빠른 프로세스 시작\n단점: Page Fault 시 디스크 I/O → 느림\n\nPage Fault Rate가 높으면 성능 저하\n→ Thrashing: 페이지 교체가 너무 잦아 CPU가 일 못함\n→ 해결: Working Set, PFF(Page Fault Frequency)",
+    "sub": "운영체제"
+  },
+  {
+    "id": 33,
+    "front": "페이지 교체 알고리즘?",
+    "back": "물리 메모리 꽉 찼을 때 어떤 페이지를 내릴지 결정.\n\n1) FIFO: 가장 먼저 들어온 페이지 교체. 단순하지만 Belady's Anomaly 발생.\n2) OPT (Optimal): 가장 오래 사용 안 될 페이지 교체. 이론적 최적. 실현 불가.\n3) LRU (Least Recently Used): 가장 오래 전에 사용된 페이지 교체. 실용적.\n4) LFU (Least Frequently Used): 사용 빈도가 가장 낮은 페이지 교체.\n5) Clock (Second Chance): FIFO + 참조 비트. 한 번 더 기회.",
+    "example": "LRU 구현:\n- 연결 리스트: 접근 시 맨 앞으로 이동, 교체 시 맨 뒤 제거\n- HashMap + Doubly Linked List: O(1)\n\nBelady's Anomaly: FIFO에서 프레임 수 늘렸는데 Page Fault 증가하는 현상",
+    "sub": "운영체제"
+  },
+  {
+    "id": 34,
+    "front": "캐시의 지역성 (Locality)과 Caching Line?",
+    "back": "지역성 (Locality):\n1) 시간적 지역성: 최근 접근한 데이터를 다시 접근할 확률 높음 (반복문 변수)\n2) 공간적 지역성: 접근한 데이터 근처를 접근할 확률 높음 (배열 순회)\n\nCaching Line:\n캐시에 데이터를 저장하는 단위 (보통 64바이트). 하나의 데이터를 가져올 때 주변 데이터도 함께 캐시에 적재.",
+    "example": "2차원 배열 순회:\narr[i][j] (행 우선) → 공간적 지역성 good → 캐시 히트 높음\narr[j][i] (열 우선) → 메모리 점프 → 캐시 미스 많음\n\nL1 캐시: ~1ns, L2: ~4ns, L3: ~10ns\nRAM: ~100ns, Disk: ~10ms\n→ 캐시 활용이 성능에 큰 영향",
+    "sub": "운영체제"
+  },
+  {
+    "id": 35,
+    "front": "데이터베이스를 사용하는 이유?",
+    "back": "파일 시스템의 문제점:\n1) 데이터 중복과 불일치\n2) 데이터 접근이 어려움 (새로운 요구마다 프로그램 작성)\n3) 데이터 고립 (여러 파일, 여러 형식)\n4) 무결성 문제 (제약 조건 관리 어려움)\n5) 동시 접근 제어 어려움\n6) 보안 문제\n\nDBMS가 이 모든 문제를 해결.",
+    "example": "데이터베이스 성능 핵심:\n→ 디스크 I/O를 얼마나 줄이느냐\n\n방법: 버퍼 풀, 인덱스, 쿼리 최적화, 정규화/반정규화, 파티셔닝, 캐싱",
+    "sub": "데이터베이스"
+  },
+  {
+    "id": 36,
+    "front": "Index (인덱스)란?",
+    "back": "데이터베이스에서 검색 속도를 높이기 위한 자료구조. 책의 색인(목차)과 같은 원리.\n\nFull Scan O(n) → Index Scan O(log n)\n\n자료구조:\n1) B+Tree: 가장 일반적. 범위 검색에 유리. 리프 노드가 연결 리스트.\n2) Hash: 등호(=) 검색에 O(1). 범위 검색 불가.\n3) Bitmap: 카디널리티 낮은 컬럼 (성별 등)에 유리.",
+    "example": "CREATE INDEX idx_name ON users(name);\n\nB+Tree 구조:\n- 루트 → 내부 노드 → 리프 노드\n- 리프 노드에 실제 데이터 포인터\n- 리프끼리 Linked List 연결 → 범위 검색 빠름",
+    "sub": "데이터베이스"
+  },
+  {
+    "id": 37,
+    "front": "Primary Index vs Secondary Index?",
+    "back": "Primary Index (클러스터 인덱스):\n- 테이블당 1개만 가능\n- 데이터가 인덱스 순서대로 물리적 정렬\n- PK에 자동 생성\n- 범위 검색 매우 빠름\n\nSecondary Index (논클러스터 인덱스):\n- 테이블당 여러 개 가능\n- 별도 인덱스 구조 + 데이터 포인터\n- 데이터 물리적 순서와 무관\n- 추가 조회(Bookmark Lookup) 필요할 수 있음",
+    "example": "Composite Index (복합 인덱스):\nCREATE INDEX idx ON orders(user_id, created_at);\n\n최좌선 컬럼 원칙:\n→ WHERE user_id = 1 → 인덱스 사용 O\n→ WHERE user_id = 1 AND created_at > ... → O\n→ WHERE created_at > ... → 인덱스 사용 X (첫 컬럼 없음)",
+    "sub": "데이터베이스"
+  },
+  {
+    "id": 38,
+    "front": "Index의 성능과 고려 사항?",
+    "back": "장점: SELECT 성능 향상 (O(n) → O(log n))\n\n단점:\n1) INSERT/UPDATE/DELETE 성능 저하 (인덱스도 갱신해야 함)\n2) 추가 저장 공간 필요 (테이블의 10~20%)\n3) 잘못된 인덱스는 오히려 성능 악화\n\n인덱스를 걸면 좋은 경우:\n- WHERE, JOIN, ORDER BY에 자주 쓰는 컬럼\n- 카디널리티가 높은 컬럼 (중복 적은)\n- 변경이 적은 컬럼",
+    "example": "인덱스 안 타는 경우:\n1) WHERE name LIKE '%kim' (앞에 와일드카드)\n2) WHERE YEAR(created_at) = 2024 (컬럼에 함수 적용)\n3) WHERE age != 25 (부정 조건)\n4) OR 조건 남발\n5) 데이터 양이 적으면 Full Scan이 더 빠름",
+    "sub": "데이터베이스"
+  },
+  {
+    "id": 39,
+    "front": "정규화 (Normalization)란?",
+    "back": "배경: 데이터 중복 → 갱신 이상(Anomaly) 발생\n1) 삽입 이상: 불필요한 데이터 없이는 삽입 불가\n2) 삭제 이상: 필요한 데이터까지 함께 삭제\n3) 갱신 이상: 일부만 수정 시 데이터 불일치\n\n정규화: 테이블을 분해하여 이상 현상을 제거하는 과정.",
+    "example": "1NF: 각 컬럼이 원자값 (반복 그룹 제거)\n2NF: 1NF + 부분 함수 종속 제거 (복합키의 일부에만 종속 X)\n3NF: 2NF + 이행 함수 종속 제거 (A→B→C에서 A→C 제거)\nBCNF: 모든 결정자가 후보키\n\n장점: 이상 현상 제거, 저장 공간 절약\n단점: JOIN 증가 → 읽기 성능 저하\n→ 반정규화(Denormalization)로 보완",
+    "sub": "데이터베이스"
+  },
+  {
+    "id": 40,
+    "front": "트랜잭션(Transaction)이란?",
+    "back": "데이터베이스의 상태를 변화시키는 하나의 논리적 작업 단위. 전부 성공하거나 전부 실패해야 함.\n\nACID 특성:\n1) Atomicity (원자성): 전부 수행 or 전부 취소\n2) Consistency (일관성): 트랜잭션 전후 DB 무결성 유지\n3) Isolation (독립성): 동시 실행 트랜잭션이 서로 간섭 X\n4) Durability (지속성): 완료된 트랜잭션은 영구 반영",
+    "example": "계좌 이체 예시:\nBEGIN;\nUPDATE accounts SET balance = balance - 10000 WHERE id = 'A';\nUPDATE accounts SET balance = balance + 10000 WHERE id = 'B';\nCOMMIT;\n→ 중간에 실패하면 ROLLBACK으로 원상복구",
+    "sub": "데이터베이스"
+  },
+  {
+    "id": 41,
+    "front": "트랜잭션과 Lock, 트랜잭션 상태?",
+    "back": "Lock: 동시성 제어를 위해 데이터에 잠금 설정\n- Shared Lock (S): 읽기 허용, 쓰기 차단\n- Exclusive Lock (X): 읽기/쓰기 모두 차단\n\n트랜잭션 상태:\n1) Active: 실행 중\n2) Partially Committed: 마지막 연산 수행, 아직 커밋 전\n3) Committed: 성공적으로 완료\n4) Failed: 오류 발생\n5) Aborted: 롤백 완료",
+    "example": "주의할 점:\n1) 트랜잭션 범위를 최소화할 것 (Lock 점유 시간 줄이기)\n2) 교착 상태(Deadlock) 주의\n3) 트랜잭션 중 외부 API 호출 지양\n\n격리 수준 (낮→높):\nRead Uncommitted → Read Committed → Repeatable Read → Serializable",
+    "sub": "데이터베이스"
+  },
+  {
+    "id": 42,
+    "front": "Statement vs PreparedStatement?",
+    "back": "Statement:\n- SQL을 실행할 때마다 파싱 → 최적화 → 실행\n- SQL Injection에 취약\n- 동적 쿼리에 사용\n\nPreparedStatement:\n- SQL을 미리 컴파일(precompile)해두고 파라미터만 바인딩\n- SQL Injection 방지 (바인딩 변수 사용)\n- 같은 쿼리 반복 시 성능 우수 (실행 계획 재사용)",
+    "example": "// Statement (취약)\nString sql = \"SELECT * FROM users WHERE id = '\" + userId + \"'\";\n→ userId = \"1' OR '1'='1\" 주입 가능\n\n// PreparedStatement (안전)\nPreparedStatement ps = conn.prepareStatement(\"SELECT * FROM users WHERE id = ?\");\nps.setString(1, userId);",
+    "sub": "데이터베이스"
+  },
+  {
+    "id": 43,
+    "front": "NoSQL이란?",
+    "back": "Not Only SQL. 관계형이 아닌 데이터베이스의 통칭.\n\nCAP 이론 (3개 중 2개만 만족 가능):\n1) Consistency (일관성): 모든 노드가 같은 데이터\n2) Availability (가용성): 항상 응답 가능\n3) Partition Tolerance (분할 허용): 네트워크 단절에도 동작\n\nRDBMS: CA 중시 (단일 서버)\nNoSQL: CP 또는 AP 중시 (분산 환경)",
+    "example": "저장 방식 분류:\n1) Key-Value: Redis, DynamoDB → 단순 조회 최적, 캐시\n2) Document: MongoDB → JSON 형태, 유연한 스키마\n3) Column: Cassandra, HBase → 대용량 쓰기, 시계열\n4) Graph: Neo4j → 관계 중심 데이터 (SNS, 추천)\n\n선택 기준: 데이터 구조, 확장 방식, 일관성 요구 수준",
+    "sub": "데이터베이스"
+  },
+  {
+    "id": 44,
+    "front": "DBMS는 어떻게 트랜잭션을 관리할까?",
+    "back": "1) Undo Log: 트랜잭션 실패 시 원래 값으로 복원용 로그\n2) Redo Log (WAL): 커밋된 데이터를 장애 후 복구용 로그\n3) MVCC (Multi-Version Concurrency Control): 데이터의 여러 버전 유지. 읽기 시 Lock 없이 스냅샷 읽기.\n4) 2PL (Two-Phase Locking): Growing Phase(잠금 획득)와 Shrinking Phase(잠금 해제) 분리.",
+    "example": "WAL (Write-Ahead Logging):\n→ 데이터 변경 전에 반드시 로그를 먼저 디스크에 기록\n→ 장애 시 로그 기반 복구\n\nMVCC (PostgreSQL, MySQL InnoDB):\n→ SELECT는 과거 버전 읽기 → Lock 불필요\n→ UPDATE는 새 버전 생성\n→ 읽기/쓰기 서로 Block하지 않음",
+    "sub": "데이터베이스"
   }
 ]

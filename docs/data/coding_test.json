@@ -1,0 +1,212 @@
+[
+  {
+    "id": 1,
+    "front": "리스트 컴프리헨션",
+    "back": "[표현식 for 변수 in 반복가능 if 조건]",
+    "example": "squares = [x**2 for x in range(10) if x % 2 == 0]\n# [0, 4, 16, 36, 64]",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 2,
+    "front": "딕셔너리 컴프리헨션",
+    "back": "{키: 값 for 변수 in 반복가능}",
+    "example": "d = {x: x**2 for x in range(5)}\n# {0:0, 1:1, 2:4, 3:9, 4:16}",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 3,
+    "front": "enumerate()",
+    "back": "인덱스와 값을 동시에 순회",
+    "example": "for i, val in enumerate(['a','b','c']):\n    print(i, val)\n# 0 a / 1 b / 2 c",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 4,
+    "front": "zip()",
+    "back": "여러 리스트를 동시에 순회 (짧은 쪽 기준)",
+    "example": "names = ['Kim','Lee']\nages = [25, 30]\nfor n, a in zip(names, ages):\n    print(n, a)",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 5,
+    "front": "collections.Counter",
+    "back": "요소 개수를 세서 딕셔너리로 반환",
+    "example": "from collections import Counter\nCounter('aabbbc')\n# Counter({'b':3, 'a':2, 'c':1})\n\nCounter('aabbbc').most_common(1)\n# [('b', 3)]",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 6,
+    "front": "collections.defaultdict",
+    "back": "키가 없을 때 기본값 자동 생성하는 딕셔너리",
+    "example": "from collections import defaultdict\nd = defaultdict(list)\nd['a'].append(1)  # KeyError 안 남\n# {'a': [1]}",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 7,
+    "front": "collections.deque",
+    "back": "양쪽 끝에서 O(1)으로 삽입/삭제 가능한 큐",
+    "example": "from collections import deque\ndq = deque([1,2,3])\ndq.appendleft(0)  # [0,1,2,3]\ndq.pop()          # 3\ndq.popleft()      # 0",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 8,
+    "front": "heapq (최소 힙)",
+    "back": "파이썬 기본 힙은 최소 힙. 최대 힙은 -값 사용.",
+    "example": "import heapq\nh = [3,1,4,1,5]\nheapq.heapify(h)       # [1,1,4,3,5]\nheapq.heappush(h, 0)   # [0,1,4,3,5,1]\nheapq.heappop(h)       # 0\n\n# 최대 힙: -값으로 push/pop\nheapq.heappush(h, -val)",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 9,
+    "front": "sorted()와 lambda 정렬",
+    "back": "key 파라미터로 정렬 기준 지정",
+    "example": "# 두 번째 요소 기준 정렬\narr = [(1,3),(2,1),(3,2)]\nsorted(arr, key=lambda x: x[1])\n# [(2,1),(3,2),(1,3)]\n\n# 내림차순\nsorted(arr, key=lambda x: -x[1])",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 10,
+    "front": "문자열 슬라이싱",
+    "back": "s[start:end:step] — end는 미포함",
+    "example": "s = 'abcdef'\ns[1:4]    # 'bcd'\ns[::-1]   # 'fedcba' (뒤집기)\ns[::2]    # 'ace'",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 11,
+    "front": "map(), filter()",
+    "back": "map: 각 요소에 함수 적용\nfilter: 조건에 맞는 요소만 추출",
+    "example": "list(map(int, '1 2 3'.split()))  # [1, 2, 3]\nlist(filter(lambda x: x > 2, [1,2,3,4]))  # [3, 4]",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 12,
+    "front": "입력 받기 (빠른 입력)",
+    "back": "sys.stdin.readline 사용 (input()보다 빠름)",
+    "example": "import sys\ninput = sys.stdin.readline\n\nn = int(input())\narr = list(map(int, input().split()))",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 13,
+    "front": "itertools.permutations / combinations",
+    "back": "순열(nPr)과 조합(nCr) 생성",
+    "example": "from itertools import permutations, combinations\n\nlist(permutations([1,2,3], 2))\n# [(1,2),(1,3),(2,1),(2,3),(3,1),(3,2)]\n\nlist(combinations([1,2,3], 2))\n# [(1,2),(1,3),(2,3)]",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 14,
+    "front": "set 연산",
+    "back": "교집합(&), 합집합(|), 차집합(-), 대칭차(^)",
+    "example": "a = {1,2,3}\nb = {2,3,4}\na & b  # {2,3}\na | b  # {1,2,3,4}\na - b  # {1}\na ^ b  # {1,4}",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 15,
+    "front": "bisect (이진 탐색 모듈)",
+    "back": "정렬된 리스트에서 삽입 위치를 O(log n)으로 탐색",
+    "example": "from bisect import bisect_left, bisect_right\narr = [1,2,4,4,8]\nbisect_left(arr, 4)   # 2 (4가 들어갈 왼쪽 위치)\nbisect_right(arr, 4)  # 4 (4가 들어갈 오른쪽 위치)",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 16,
+    "front": "BFS 템플릿",
+    "back": "deque로 큐 구현, visited 배열로 방문 체크",
+    "example": "from collections import deque\ndef bfs(graph, start):\n    visited = set([start])\n    queue = deque([start])\n    while queue:\n        node = queue.popleft()\n        for neighbor in graph[node]:\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)",
+    "sub": "그래프"
+  },
+  {
+    "id": 17,
+    "front": "DFS 템플릿 (재귀)",
+    "back": "재귀 호출로 깊이 우선 탐색. 스택 오버플로우 주의.",
+    "example": "import sys\nsys.setrecursionlimit(10**6)\n\ndef dfs(node, visited, graph):\n    visited.add(node)\n    for neighbor in graph[node]:\n        if neighbor not in visited:\n            dfs(neighbor, visited, graph)",
+    "sub": "그래프"
+  },
+  {
+    "id": 18,
+    "front": "다이나믹 프로그래밍 (바텀업)",
+    "back": "작은 문제부터 테이블에 채워나가는 방식",
+    "example": "# 피보나치\ndp = [0] * (n+1)\ndp[1] = 1\nfor i in range(2, n+1):\n    dp[i] = dp[i-1] + dp[i-2]\n\n# 배낭 문제\nfor i in range(1, n+1):\n    for w in range(W+1):\n        if weight[i] <= w:\n            dp[w] = max(dp[w], dp[w-weight[i]] + value[i])",
+    "sub": "DP"
+  },
+  {
+    "id": 19,
+    "front": "다이나믹 프로그래밍 (탑다운 / 메모이제이션)",
+    "back": "재귀 + 캐싱. @lru_cache 데코레이터 활용.",
+    "example": "from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib(n):\n    if n <= 1: return n\n    return fib(n-1) + fib(n-2)",
+    "sub": "DP"
+  },
+  {
+    "id": 20,
+    "front": "이진 탐색 (직접 구현)",
+    "back": "정렬된 배열에서 target을 O(log n)으로 탐색",
+    "example": "def binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1",
+    "sub": "탐색"
+  },
+  {
+    "id": 21,
+    "front": "투 포인터",
+    "back": "정렬된 배열에서 두 포인터로 조건을 만족하는 쌍 탐색. O(n)",
+    "example": "# 합이 target인 두 수 찾기\ndef two_sum(arr, target):\n    left, right = 0, len(arr) - 1\n    while left < right:\n        s = arr[left] + arr[right]\n        if s == target: return [left, right]\n        elif s < target: left += 1\n        else: right -= 1",
+    "sub": "탐색"
+  },
+  {
+    "id": 22,
+    "front": "슬라이딩 윈도우",
+    "back": "고정/가변 크기 윈도우를 밀면서 부분 배열 문제 해결",
+    "example": "# 길이 k인 부분 배열의 최대 합\ndef max_subarray_sum(arr, k):\n    window = sum(arr[:k])\n    result = window\n    for i in range(k, len(arr)):\n        window += arr[i] - arr[i-k]\n        result = max(result, window)\n    return result",
+    "sub": "탐색"
+  },
+  {
+    "id": 23,
+    "front": "그래프 인접 리스트 만들기",
+    "back": "defaultdict(list) 또는 [[] for _ in range(n)]",
+    "example": "# 양방향 그래프\nfrom collections import defaultdict\ngraph = defaultdict(list)\nfor _ in range(m):\n    a, b = map(int, input().split())\n    graph[a].append(b)\n    graph[b].append(a)",
+    "sub": "그래프"
+  },
+  {
+    "id": 24,
+    "front": "다익스트라 (파이썬 구현)",
+    "back": "heapq를 이용한 최단 경로. O(E log V)",
+    "example": "import heapq\ndef dijkstra(graph, start):\n    dist = {start: 0}\n    heap = [(0, start)]\n    while heap:\n        cost, node = heapq.heappop(heap)\n        if cost > dist.get(node, float('inf')):\n            continue\n        for nxt, w in graph[node]:\n            nc = cost + w\n            if nc < dist.get(nxt, float('inf')):\n                dist[nxt] = nc\n                heapq.heappush(heap, (nc, nxt))\n    return dist",
+    "sub": "그래프"
+  },
+  {
+    "id": 25,
+    "front": "유니온 파인드 (Union-Find)",
+    "back": "서로소 집합. 두 원소가 같은 그룹인지 판별. 경로 압축 + 랭크 최적화.",
+    "example": "parent = list(range(n))\ndef find(x):\n    if parent[x] != x:\n        parent[x] = find(parent[x])\n    return parent[x]\ndef union(a, b):\n    a, b = find(a), find(b)\n    if a != b: parent[b] = a",
+    "sub": "그래프"
+  },
+  {
+    "id": 26,
+    "front": "2차원 배열 BFS (격자 탐색)",
+    "back": "dx, dy 방향 배열로 상하좌우 탐색",
+    "example": "from collections import deque\ndx = [-1,1,0,0]\ndy = [0,0,-1,1]\ndef bfs(grid, sx, sy):\n    n, m = len(grid), len(grid[0])\n    visited = [[False]*m for _ in range(n)]\n    visited[sx][sy] = True\n    queue = deque([(sx,sy)])\n    while queue:\n        x, y = queue.popleft()\n        for i in range(4):\n            nx, ny = x+dx[i], y+dy[i]\n            if 0<=nx<n and 0<=ny<m and not visited[nx][ny]:\n                visited[nx][ny] = True\n                queue.append((nx,ny))",
+    "sub": "그래프"
+  },
+  {
+    "id": 27,
+    "front": "백트래킹 템플릿",
+    "back": "재귀로 모든 경우를 탐색하되, 조건에 안 맞으면 가지치기",
+    "example": "def backtrack(path, choices):\n    if 종료조건:\n        result.append(path[:])\n        return\n    for choice in choices:\n        if not valid(choice): continue\n        path.append(choice)\n        backtrack(path, next_choices)\n        path.pop()  # 되돌리기",
+    "sub": "완전탐색"
+  },
+  {
+    "id": 28,
+    "front": "문자열 → 숫자, 숫자 → 문자열",
+    "back": "int(), str(), float() / ord(), chr()",
+    "example": "int('123')     # 123\nstr(123)       # '123'\nord('a')       # 97\nchr(97)        # 'a'\nbin(10)        # '0b1010'\nhex(255)       # '0xff'",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 29,
+    "front": "재귀 깊이 제한 해제",
+    "back": "파이썬 기본 재귀 제한은 1000. DFS 등에서 반드시 늘려야 함.",
+    "example": "import sys\nsys.setrecursionlimit(10**6)",
+    "sub": "파이썬 문법"
+  },
+  {
+    "id": 30,
+    "front": "최대공약수 / 최소공배수",
+    "back": "math.gcd 사용. LCM = a * b // gcd(a, b)",
+    "example": "from math import gcd\ngcd(12, 8)  # 4\n\ndef lcm(a, b):\n    return a * b // gcd(a, b)\nlcm(12, 8)  # 24",
+    "sub": "수학"
+  }
+]

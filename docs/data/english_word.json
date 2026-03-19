@@ -4,14 +4,14 @@
     "front": "abundant",
     "back": "풍부한, 많은",
     "example": "The region has abundant natural resources.",
-    "sub": "TOEIC"
+    "sub": "일반"
   },
   {
     "id": 2,
     "front": "elaborate",
     "back": "정교한, 상세히 설명하다",
     "example": "Could you elaborate on that point?",
-    "sub": "TOEIC"
+    "sub": "일반"
   },
   {
     "id": 3,
@@ -124,5 +124,215 @@
     "back": "병목 (지점)",
     "example": "The database query is the bottleneck of this feature.",
     "sub": "개발"
+  },
+  {
+    "id": 19,
+    "front": "apparently",
+    "back": "보아하니, 듣자하니",
+    "example": "Apparently, the meeting got canceled.",
+    "sub": "일반"
+  },
+  {
+    "id": 20,
+    "front": "struggle",
+    "back": "애쓰다, 고군분투하다",
+    "example": "I'm struggling to understand this concept.",
+    "sub": "일반"
+  },
+  {
+    "id": 21,
+    "front": "hesitate",
+    "back": "망설이다, 주저하다",
+    "example": "Don't hesitate to ask if you have questions.",
+    "sub": "일반"
+  },
+  {
+    "id": 22,
+    "front": "awkward",
+    "back": "어색한, 곤란한",
+    "example": "There was an awkward silence after his joke.",
+    "sub": "일반"
+  },
+  {
+    "id": 23,
+    "front": "genuine",
+    "back": "진짜의, 진심의",
+    "example": "She gave me a genuine smile.",
+    "sub": "일반"
+  },
+  {
+    "id": 24,
+    "front": "overwhelmed",
+    "back": "압도된, 벅찬",
+    "example": "I feel overwhelmed with all this work.",
+    "sub": "일반"
+  },
+  {
+    "id": 25,
+    "front": "grab",
+    "back": "잡다, (음식을) 사다/먹다",
+    "example": "Let's grab some coffee.",
+    "sub": "일반"
+  },
+  {
+    "id": 26,
+    "front": "figure out",
+    "back": "알아내다, 이해하다",
+    "example": "I can't figure out why this bug happens.",
+    "sub": "일반"
+  },
+  {
+    "id": 27,
+    "front": "assume",
+    "back": "가정하다, 추정하다",
+    "example": "I assumed you already knew about it.",
+    "sub": "일반"
+  },
+  {
+    "id": 28,
+    "front": "typically",
+    "back": "보통, 일반적으로",
+    "example": "I typically wake up at 7 AM.",
+    "sub": "일반"
+  },
+  {
+    "id": 29,
+    "front": "convenient",
+    "back": "편리한",
+    "example": "Is this time convenient for you?",
+    "sub": "일반"
+  },
+  {
+    "id": 30,
+    "front": "eventually",
+    "back": "결국, 마침내",
+    "example": "I eventually got used to the new environment.",
+    "sub": "일반"
+  },
+  {
+    "id": 31,
+    "front": "relevant",
+    "back": "관련 있는, 적절한",
+    "example": "Please include only relevant information.",
+    "sub": "일반"
+  },
+  {
+    "id": 32,
+    "front": "subtle",
+    "back": "미묘한, 섬세한",
+    "example": "There's a subtle difference between the two.",
+    "sub": "일반"
+  },
+  {
+    "id": 33,
+    "front": "obvious",
+    "back": "명백한, 분명한",
+    "example": "The answer was so obvious I missed it.",
+    "sub": "일반"
+  },
+  {
+    "id": 34,
+    "front": "barely",
+    "back": "간신히, 겨우",
+    "example": "I barely made it to the train on time.",
+    "sub": "일반"
+  },
+  {
+    "id": 35,
+    "front": "bother",
+    "back": "귀찮게 하다, 신경 쓰다",
+    "example": "Sorry to bother you, but can I ask something?",
+    "sub": "일반"
+  },
+  {
+    "id": 36,
+    "front": "postpone",
+    "back": "연기하다, 미루다",
+    "example": "We had to postpone the meeting to next week.",
+    "sub": "일반"
+  },
+  {
+    "id": 37,
+    "front": "frustrated",
+    "back": "좌절한, 답답한",
+    "example": "I'm so frustrated with this slow internet.",
+    "sub": "일반"
+  },
+  {
+    "id": 38,
+    "front": "accomplish",
+    "back": "성취하다, 달성하다",
+    "example": "We accomplished all our goals this quarter.",
+    "sub": "일반"
+  },
+  {
+    "id": 39,
+    "front": "tend to",
+    "back": "~하는 경향이 있다",
+    "example": "I tend to overthink things.",
+    "sub": "일반"
+  },
+  {
+    "id": 40,
+    "front": "meanwhile",
+    "back": "그 사이에, 한편",
+    "example": "I'll prepare the slides. Meanwhile, can you gather the data?",
+    "sub": "일반"
+  },
+  {
+    "id": 41,
+    "front": "despite",
+    "back": "~에도 불구하고",
+    "example": "Despite the rain, we went hiking.",
+    "sub": "일반"
+  },
+  {
+    "id": 42,
+    "front": "regarding",
+    "back": "~에 관하여",
+    "example": "I have a question regarding the new policy.",
+    "sub": "일반"
+  },
+  {
+    "id": 43,
+    "front": "proper",
+    "back": "적절한, 올바른",
+    "example": "Make sure to use the proper format.",
+    "sub": "일반"
+  },
+  {
+    "id": 44,
+    "front": "reliable",
+    "back": "믿을 수 있는, 신뢰할 수 있는",
+    "example": "He's the most reliable person on the team.",
+    "sub": "일반"
+  },
+  {
+    "id": 45,
+    "front": "occur",
+    "back": "발생하다, (생각이) 떠오르다",
+    "example": "It didn't occur to me until later.",
+    "sub": "일반"
+  },
+  {
+    "id": 46,
+    "front": "negotiate",
+    "back": "협상하다",
+    "example": "We need to negotiate the contract terms.",
+    "sub": "일반"
+  },
+  {
+    "id": 47,
+    "front": "commute",
+    "back": "통근하다",
+    "example": "I commute about an hour each way.",
+    "sub": "일반"
+  },
+  {
+    "id": 48,
+    "front": "exhausted",
+    "back": "지친, 기진맥진한",
+    "example": "I'm completely exhausted after today.",
+    "sub": "일반"
   }
 ]
