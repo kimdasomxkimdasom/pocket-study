@@ -20,6 +20,7 @@ const CATEGORY_NAMES = {
   english_conversation: "영어 회화",
   english_pattern: "영어 패턴",
   cs: "CS 공부",
+  programming: "프로그래밍 언어",
 };
 
 // JSON 데이터 로드
@@ -98,6 +99,7 @@ function renderCardList() {
   }
 
   emptyMsg.classList.add("hidden");
+  const isConversation = currentCategory === "english_conversation";
   list.innerHTML = allCards
     .map((c) => {
       const stats = getCardStats(c.id, currentCategory);
@@ -109,7 +111,7 @@ function renderCardList() {
         <div class="card-item" onclick="toggleCardDetail(this)">
           <div class="card-item-content">
             <div class="card-item-front">${escapeHtml(c.front)}</div>
-            <div class="card-item-back">${escapeHtml(c.back)}</div>
+            <div class="card-item-back ${isConversation ? "spoiler" : ""}">${escapeHtml(c.back)}</div>
             ${c.example ? `<div class="card-item-example hidden">${escapeHtml(c.example)}</div>` : ""}
           </div>
           ${statsHtml}
@@ -119,6 +121,8 @@ function renderCardList() {
 }
 
 function toggleCardDetail(el) {
+  const spoiler = el.querySelector(".spoiler");
+  if (spoiler) spoiler.classList.toggle("revealed");
   const example = el.querySelector(".card-item-example");
   if (example) example.classList.toggle("hidden");
 }

@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "front": "변수 선언",
+    "back": "Java: int x = 10;\nJS/TS: let x = 10; / const x = 10;\nPython: x = 10\nGo: x := 10",
+    "example": "Java는 타입 필수, Python은 타입 없음, Go는 := 로 타입 추론",
+    "sub": "기본 문법"
+  },
+  {
+    "id": 2,
+    "front": "null 체크",
+    "back": "Java: obj != null / Optional.ofNullable(obj)\nJS/TS: obj ?? defaultVal (nullish coalescing)\nPython: obj is not None",
+    "example": "JS에서 0, ''는 falsy지만 null은 아님\n?? 는 null/undefined만 체크, || 는 모든 falsy 체크",
+    "sub": "기본 문법"
+  },
+  {
+    "id": 3,
+    "front": "문자열 포맷팅",
+    "back": "Java: String.format(\"Hello %s\", name)\nJS/TS: `Hello ${name}` (템플릿 리터럴)\nPython: f\"Hello {name}\"",
+    "example": "Java 15+: 텍스트 블록 \"\"\"...\"\"\"\nJS: 백틱(`)으로 멀티라인도 가능",
+    "sub": "문자열"
+  },
+  {
+    "id": 4,
+    "front": "배열/리스트 순회",
+    "back": "Java: for (var item : list) {}\nJS/TS: arr.forEach(item => {}) / for (const item of arr)\nPython: for item in list:",
+    "example": "인덱스 필요시:\nJava: IntStream.range(0, list.size())\nJS: arr.forEach((item, i) => {})\nPython: for i, item in enumerate(list):",
+    "sub": "반복문"
+  },
+  {
+    "id": 5,
+    "front": "map (배열 변환)",
+    "back": "Java: list.stream().map(x -> x * 2).collect(Collectors.toList())\nJS/TS: arr.map(x => x * 2)\nPython: [x * 2 for x in list]",
+    "example": "Java는 Stream API 필요, JS/Python은 간결함",
+    "sub": "배열"
+  },
+  {
+    "id": 6,
+    "front": "filter (배열 필터링)",
+    "back": "Java: list.stream().filter(x -> x > 5).collect(Collectors.toList())\nJS/TS: arr.filter(x => x > 5)\nPython: [x for x in list if x > 5]",
+    "example": "Python은 list comprehension에 if 조건 추가",
+    "sub": "배열"
+  },
+  {
+    "id": 7,
+    "front": "람다 / 화살표 함수",
+    "back": "Java: (a, b) -> a + b\nJS/TS: (a, b) => a + b\nPython: lambda a, b: a + b",
+    "example": "Java 람다는 함수형 인터페이스에서만 사용 가능\nPython lambda는 단일 표현식만 가능",
+    "sub": "함수"
+  },
+  {
+    "id": 8,
+    "front": "예외 처리",
+    "back": "Java: try { } catch (Exception e) { } finally { }\nJS/TS: try { } catch (e) { } finally { }\nPython: try: ... except Exception as e: ... finally:",
+    "example": "Java는 checked exception 강제 처리\nJS/Python은 모든 예외가 unchecked",
+    "sub": "에러 처리"
+  },
+  {
+    "id": 9,
+    "front": "비동기 처리",
+    "back": "Java: CompletableFuture / @Async\nJS/TS: async/await, Promise\nPython: asyncio, async/await",
+    "example": "JS: const data = await fetch(url)\nJava: CompletableFuture.supplyAsync(() -> callApi())",
+    "sub": "비동기"
+  },
+  {
+    "id": 10,
+    "front": "딕셔너리/맵 생성",
+    "back": "Java: Map.of(\"a\", 1) / new HashMap<>()\nJS/TS: { a: 1 } / new Map()\nPython: { \"a\": 1 }",
+    "example": "Java Map.of()는 불변(immutable)\nJS 객체 키는 항상 문자열, Map은 어떤 타입이든 키 가능",
+    "sub": "자료구조"
+  },
+  {
+    "id": 11,
+    "front": "동등성 비교 (== vs ===)",
+    "back": "Java: == (참조 비교), .equals() (값 비교)\nJS: == (타입 변환 후 비교), === (타입+값 비교)\nPython: == (값 비교), is (참조 비교)",
+    "example": "JS: '1' == 1 → true, '1' === 1 → false\nJava: new String(\"a\") == new String(\"a\") → false",
+    "sub": "기본 문법"
+  },
+  {
+    "id": 12,
+    "front": "클래스 상속",
+    "back": "Java: class Dog extends Animal {}\nJS/TS: class Dog extends Animal {}\nPython: class Dog(Animal):",
+    "example": "Java: 단일 상속 + 인터페이스 다중 구현\nPython: 다중 상속 가능 (MRO)\nJS: 단일 상속 + Mixin 패턴",
+    "sub": "OOP"
+  },
+  {
+    "id": 13,
+    "front": "인터페이스 / 타입 정의",
+    "back": "Java: interface Flyable { void fly(); }\nTS: interface Flyable { fly(): void; }\nPython: from abc import ABC; class Flyable(ABC):\nGo: type Flyable interface { Fly() }",
+    "example": "TS는 interface와 type 둘 다 사용 가능\nGo는 암시적 구현 (implements 키워드 없음)",
+    "sub": "OOP"
+  },
+  {
+    "id": 14,
+    "front": "삼항 연산자",
+    "back": "Java: x > 0 ? \"양수\" : \"음수\"\nJS/TS: x > 0 ? \"양수\" : \"음수\"\nPython: \"양수\" if x > 0 else \"음수\"",
+    "example": "Python만 순서가 다름: 값 if 조건 else 값",
+    "sub": "기본 문법"
+  },
+  {
+    "id": 15,
+    "front": "구조 분해 / 언패킹",
+    "back": "JS/TS: const { name, age } = user;\nPython: name, age = (\"Kim\", 25)\nJava: 지원 안 함 (record 패턴 매칭 일부 가능)",
+    "example": "JS 배열: const [a, b] = [1, 2]\nPython: a, *rest = [1, 2, 3] → rest = [2, 3]",
+    "sub": "기본 문법"
+  }
+]

@@ -19,5 +19,89 @@
     "back": "Stack: LIFO (후입선출)\nQueue: FIFO (선입선출)",
     "example": "Stack → 뒤로가기 버튼\nQueue → 프린터 대기열",
     "sub": "자료구조"
+  },
+  {
+    "id": 4,
+    "front": "시간복잡도 O(n log n)인 정렬 알고리즘은?",
+    "back": "병합 정렬(Merge Sort), 퀵 정렬(Quick Sort), 힙 정렬(Heap Sort)",
+    "example": "퀵 정렬은 최악 O(n²)이지만 평균적으로 가장 빠름",
+    "sub": "알고리즘"
+  },
+  {
+    "id": 5,
+    "front": "BFS와 DFS의 차이?",
+    "back": "BFS: 너비 우선 탐색 (큐 사용)\nDFS: 깊이 우선 탐색 (스택/재귀 사용)",
+    "example": "BFS → 최단 경로 탐색\nDFS → 미로 탐색, 백트래킹",
+    "sub": "알고리즘"
+  },
+  {
+    "id": 6,
+    "front": "이진 탐색(Binary Search)의 전제 조건은?",
+    "back": "배열이 정렬되어 있어야 함. 중간값과 비교하며 탐색 범위를 절반씩 줄임. O(log n)",
+    "example": "left, right 포인터를 이동하며 mid = (left + right) // 2",
+    "sub": "알고리즘"
+  },
+  {
+    "id": 7,
+    "front": "다이나믹 프로그래밍(DP)이란?",
+    "back": "큰 문제를 작은 하위 문제로 나누고, 결과를 저장(메모이제이션)하여 중복 계산을 방지하는 기법",
+    "example": "피보나치: fib(n) = fib(n-1) + fib(n-2)\n메모이제이션 없으면 O(2^n) → 있으면 O(n)",
+    "sub": "알고리즘"
+  },
+  {
+    "id": 8,
+    "front": "그리디(Greedy) 알고리즘이란?",
+    "back": "매 단계에서 가장 좋아 보이는 선택을 하는 알고리즘. 항상 최적해를 보장하진 않음.",
+    "example": "거스름돈 문제: 가장 큰 단위부터 거슬러줌\n활동 선택 문제: 가장 빨리 끝나는 활동 선택",
+    "sub": "알고리즘"
+  },
+  {
+    "id": 9,
+    "front": "해시 테이블의 충돌 해결 방법은?",
+    "back": "1) 체이닝(Chaining): 같은 버킷에 연결 리스트로 저장\n2) 개방 주소법(Open Addressing): 다른 빈 버킷을 탐색",
+    "example": "Java HashMap → 체이닝 사용\nPython dict → 개방 주소법 사용",
+    "sub": "알고리즘"
+  },
+  {
+    "id": 10,
+    "front": "TDD란?",
+    "back": "Test-Driven Development. 테스트를 먼저 작성하고, 테스트를 통과하는 최소한의 코드를 작성한 뒤, 리팩토링하는 개발 방법론.",
+    "example": "Red → Green → Refactor\n1) 실패하는 테스트 작성\n2) 테스트 통과하는 코드 작성\n3) 코드 정리",
+    "sub": "TDD"
+  },
+  {
+    "id": 11,
+    "front": "TDD에서 단위 테스트(Unit Test)란?",
+    "back": "가장 작은 단위(함수, 메서드)를 독립적으로 검증하는 테스트. 외부 의존성은 모킹(Mocking) 처리.",
+    "example": "JUnit(Java), Jest(JS), pytest(Python)",
+    "sub": "TDD"
+  },
+  {
+    "id": 12,
+    "front": "TDD의 F.I.R.S.T 원칙은?",
+    "back": "Fast: 빠르게 실행\nIndependent: 테스트 간 독립적\nRepeatable: 어느 환경에서든 반복 가능\nSelf-validating: 성공/실패 자동 판단\nTimely: 실제 코드 전에 작성",
+    "example": "",
+    "sub": "TDD"
+  },
+  {
+    "id": 13,
+    "front": "통합 테스트 vs E2E 테스트?",
+    "back": "통합 테스트: 여러 모듈 간의 상호작용 검증\nE2E 테스트: 사용자 관점에서 전체 시스템 흐름 검증",
+    "example": "통합: Service + Repository 함께 테스트\nE2E: 브라우저로 로그인→주문→결제 흐름 테스트",
+    "sub": "TDD"
+  },
+  {
+    "id": 14,
+    "front": "테스트 더블(Test Double)의 종류는?",
+    "back": "Stub: 미리 정해진 값 반환\nMock: 호출 여부/횟수 검증\nSpy: 실제 동작 + 호출 기록\nFake: 간단한 구현체 (예: In-Memory DB)",
+    "example": "Mockito.when(repo.findById(1)).thenReturn(user); // Stub\nverify(repo, times(1)).save(any()); // Mock 검증",
+    "sub": "TDD"
+  },
+  {
+    "id": 15,
+    "front": "다익스트라(Dijkstra) 알고리즘이란?",
+    "back": "가중치가 있는 그래프에서 하나의 시작점으로부터 모든 노드까지의 최단 경로를 구하는 알고리즘. 음수 가중치 불가.",
+    "example": "우선순위 큐(힙) 사용, O(E log V)\n음수 가중치가 있으면 벨만-포드 사용",
+    "sub": "알고리즘"
   }
 ]
