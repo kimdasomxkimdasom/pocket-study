@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "front": "I'm about to ~",
+    "back": "막 ~하려는 참이다",
+    "example": "I'm about to leave the office.",
+    "sub": "시간"
+  },
+  {
+    "id": 2,
+    "front": "It's worth ~ing",
+    "back": "~할 가치가 있다",
+    "example": "It's worth trying at least once.",
+    "sub": "평가"
+  },
+  {
+    "id": 3,
+    "front": "I ended up ~ing",
+    "back": "결국 ~하게 되었다",
+    "example": "I ended up staying up all night.",
+    "sub": "결과"
+  }
+]

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Pocket Study</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 헤더 -->
+    <header class="header">
+      <h1 id="header-title">Pocket Study</h1>
+      <button id="btn-back" class="btn-icon hidden">&larr;</button>
+    </header>
+
+    <!-- 메인 메뉴 -->
+    <div id="page-home" class="page active">
+      <div class="menu-grid">
+        <div class="menu-card" data-category="english_word">
+          <div class="menu-icon">ABC</div>
+          <div class="menu-label">영어 단어</div>
+        </div>
+        <div class="menu-card" data-category="english_conversation">
+          <div class="menu-icon">💬</div>
+          <div class="menu-label">영어 회화</div>
+        </div>
+        <div class="menu-card" data-category="english_pattern">
+          <div class="menu-icon">🔤</div>
+          <div class="menu-label">영어 패턴</div>
+        </div>
+        <div class="menu-card" data-category="cs">
+          <div class="menu-icon">&lt;/&gt;</div>
+          <div class="menu-label">CS 공부</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 카테고리 페이지 -->
+    <div id="page-category" class="page">
+      <div class="action-bar">
+        <button id="btn-quiz" class="btn accent" style="flex:1">퀴즈 시작</button>
+      </div>
+      <div id="card-count" class="card-count"></div>
+      <div id="card-list" class="card-list"></div>
+      <div id="empty-msg" class="empty-msg hidden">아직 카드가 없어요.</div>
+    </div>
+
+    <!-- 퀴즈 페이지 -->
+    <div id="page-quiz" class="page">
+      <div class="quiz-progress">
+        <span id="quiz-current">1</span> / <span id="quiz-total">10</span>
+      </div>
+      <div class="flashcard" id="flashcard">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            <p id="quiz-front"></p>
+          </div>
+          <div class="flashcard-back">
+            <p id="quiz-back"></p>
+            <p id="quiz-example" class="example-text"></p>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-actions">
+        <button id="btn-wrong" class="btn danger">모르겠어요</button>
+        <button id="btn-correct" class="btn success">알고있어요</button>
+      </div>
+    </div>
+
+    <!-- 퀴즈 결과 -->
+    <div id="page-result" class="page">
+      <div class="result-box">
+        <h2>퀴즈 결과</h2>
+        <div class="result-score">
+          <span id="result-correct">0</span> / <span id="result-total">0</span>
+        </div>
+        <p id="result-msg"></p>
+        <button id="btn-retry" class="btn primary">다시 하기</button>
+        <button id="btn-home" class="btn">홈으로</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/app.js"></script>
+</body>
+</html>
