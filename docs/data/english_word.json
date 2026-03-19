@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "front": "abundant",
+    "back": "풍부한, 많은",
+    "example": "The region has abundant natural resources.",
+    "sub": "TOEIC"
+  },
+  {
+    "id": 2,
+    "front": "elaborate",
+    "back": "정교한, 상세히 설명하다",
+    "example": "Could you elaborate on that point?",
+    "sub": "TOEIC"
+  },
+  {
+    "id": 3,
+    "front": "resilient",
+    "back": "회복력 있는, 탄력 있는",
+    "example": "Children are often more resilient than adults.",
+    "sub": "일반"
+  }
+]

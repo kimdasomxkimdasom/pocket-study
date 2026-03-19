@@ -1,0 +1,271 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #4A90D9;
+  --accent: #E8913A;
+  --success: #27AE60;
+  --danger: #E74C3C;
+  --bg: #1A1A2E;
+  --surface: #16213E;
+  --card: #0F3460;
+  --text: #EAEAEA;
+  --text-sub: #A0A0B0;
+  --radius: 12px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 헤더 */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header h1 {
+  flex: 1;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px 12px 4px 0;
+}
+
+/* 메뉴 그리드 */
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 20px;
+}
+
+.menu-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 32px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.menu-card:active {
+  transform: scale(0.96);
+}
+
+.menu-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.menu-label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* 버튼 */
+.btn {
+  padding: 12px 20px;
+  border: 1px solid var(--text-sub);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn.primary { background: var(--primary); border-color: var(--primary); }
+.btn.accent { background: var(--accent); border-color: var(--accent); }
+.btn.success { background: var(--success); border-color: var(--success); }
+.btn.danger { background: var(--danger); border-color: var(--danger); }
+
+.btn:active { opacity: 0.8; }
+
+/* 액션바 */
+.action-bar {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+.action-bar .btn { flex: 1; }
+
+/* 카드 목록 */
+.card-list {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 20px;
+}
+
+.card-item {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-item-content {
+  flex: 1;
+}
+
+.card-item-front {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.card-item-back {
+  color: var(--text-sub);
+  font-size: 14px;
+}
+
+.card-stats {
+  font-size: 12px;
+  color: var(--text-sub);
+  white-space: nowrap;
+}
+
+.card-item-example {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--accent);
+  font-style: italic;
+  white-space: pre-line;
+}
+
+.card-count {
+  text-align: center;
+  padding: 0 20px 12px;
+  font-size: 14px;
+  color: var(--text-sub);
+}
+
+/* 빈 메시지 */
+.empty-msg {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-sub);
+  font-size: 16px;
+}
+
+/* 플래시카드 */
+.flashcard {
+  perspective: 1000px;
+  margin: 20px;
+  height: 280px;
+  cursor: pointer;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+  position: absolute;
+  inset: 0;
+  background: var(--card);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  backface-visibility: hidden;
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  word-break: keep-all;
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+}
+
+.example-text {
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-sub);
+  font-style: italic;
+}
+
+/* 퀴즈 */
+.quiz-progress {
+  text-align: center;
+  padding: 16px;
+  font-size: 16px;
+  color: var(--text-sub);
+}
+
+.quiz-actions {
+  display: flex;
+  gap: 12px;
+  padding: 0 20px;
+}
+
+.quiz-actions .btn { flex: 1; padding: 16px; font-size: 16px; }
+
+/* 결과 */
+.result-box {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.result-score {
+  font-size: 48px;
+  font-weight: 700;
+  margin: 24px 0;
+  color: var(--primary);
+}
+
+.result-box .btn {
+  margin: 8px;
+  min-width: 140px;
+}
+
+#result-msg {
+  color: var(--text-sub);
+  margin-bottom: 24px;
+  font-size: 16px;
+}
+
+/* 유틸 */
+.hidden { display: none !important; }
+.page { display: none; }
+.page.active { display: block; }

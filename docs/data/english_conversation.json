@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "front": "Could you do me a favor?",
+    "back": "부탁 하나 해도 될까요?",
+    "example": "A: Could you do me a favor?\nB: Sure, what is it?",
+    "sub": "요청"
+  },
+  {
+    "id": 2,
+    "front": "I'm afraid I can't make it.",
+    "back": "죄송하지만 참석이 어려울 것 같아요.",
+    "example": "A: Are you coming to the meeting?\nB: I'm afraid I can't make it.",
+    "sub": "거절"
+  },
+  {
+    "id": 3,
+    "front": "Let me get back to you on that.",
+    "back": "그건 나중에 다시 말씀드릴게요.",
+    "example": "A: What's the budget for this project?\nB: Let me get back to you on that.",
+    "sub": "비즈니스"
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "front": "HTTP와 HTTPS의 차이점은?",
+    "back": "HTTPS는 SSL/TLS 암호화가 추가된 HTTP. 데이터를 암호화하여 전송하므로 보안이 강화됨.",
+    "example": "",
+    "sub": "네트워크"
+  },
+  {
+    "id": 2,
+    "front": "REST API의 주요 원칙은?",
+    "back": "1) Stateless 2) Client-Server 구조 3) 균일한 인터페이스 4) 캐시 가능 5) 계층화 시스템",
+    "example": "",
+    "sub": "네트워크"
+  },
+  {
+    "id": 3,
+    "front": "스택(Stack)과 큐(Queue)의 차이?",
+    "back": "Stack: LIFO (후입선출)\nQueue: FIFO (선입선출)",
+    "example": "Stack → 뒤로가기 버튼\nQueue → 프린터 대기열",
+    "sub": "자료구조"
+  }
+]
