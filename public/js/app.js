@@ -20,6 +20,7 @@ const CATEGORY_NAMES = {
   english_conversation: "영어 회화",
   english_pattern: "영어 패턴",
   cs: "CS 공부",
+  coding_test: "코딩테스트",
   programming: "프로그래밍 언어",
 };
 
