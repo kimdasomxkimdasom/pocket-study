@@ -146,9 +146,9 @@ function showQuizCard() {
   const card = quizCards[quizIndex];
   document.getElementById("quiz-current").textContent = quizIndex + 1;
   document.getElementById("quiz-total").textContent = quizCards.length;
-  document.getElementById("quiz-front").textContent = card.front;
-  document.getElementById("quiz-back").textContent = card.back;
-  document.getElementById("quiz-example").textContent = card.example || "";
+  document.getElementById("quiz-front").innerHTML = escapeHtml(card.front);
+  document.getElementById("quiz-back").innerHTML = escapeHtml(card.back);
+  document.getElementById("quiz-example").innerHTML = escapeHtml(card.example || "");
 
   const flashcard = document.getElementById("flashcard");
   flashcard.classList.remove("flipped");
@@ -205,5 +205,5 @@ document.getElementById("btn-home").addEventListener("click", () => showPage("ho
 function escapeHtml(text) {
   const div = document.createElement("div");
   div.textContent = text;
-  return div.innerHTML;
+  return div.innerHTML.replaceAll("\n", "<br>");
 }
