@@ -117,6 +117,39 @@ body {
 
 .action-bar .btn { flex: 1; }
 
+/* 서브 탭 */
+.sub-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 0 20px 12px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.sub-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.sub-tab {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border: 1px solid var(--text-sub);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--text-sub);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.sub-tab.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text);
+}
+
 /* 카드 목록 */
 .card-list {
   padding: 0 20px;
