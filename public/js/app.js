@@ -1,5 +1,7 @@
 let currentCategory = "";
 let allCards = [];
+let filteredCards = [];
+let currentSub = "전체";
 let quizCards = [];
 let quizIndex = 0;
 let quizCorrect = 0;
@@ -83,17 +85,49 @@ document.querySelectorAll(".menu-card").forEach((card) => {
   card.addEventListener("click", async () => {
     currentCategory = card.dataset.category;
     allCards = await loadCards(currentCategory);
+    currentSub = "전체";
+    filteredCards = allCards;
     showPage("category");
+    renderSubTabs();
     renderCardList();
   });
 });
+
+// 서브 탭
+function renderSubTabs() {
+  const container = document.getElementById("sub-tabs");
+  const subs = [...new Set(allCards.map((c) => c.sub).filter(Boolean))];
+  if (subs.length <= 1) {
+    container.classList.add("hidden");
+    return;
+  }
+  container.classList.remove("hidden");
+  container.innerHTML = ["전체", ...subs]
+    .map(
+      (s) =>
+        `<button class="sub-tab ${s === currentSub ? "active" : ""}" data-sub="${s}">${s}</button>`
+    )
+    .join("");
+
+  container.querySelectorAll(".sub-tab").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      currentSub = btn.dataset.sub;
+      filteredCards =
+        currentSub === "전체"
+          ? allCards
+          : allCards.filter((c) => c.sub === currentSub);
+      renderSubTabs();
+      renderCardList();
+    });
+  });
+}
 
 // 카드 목록 렌더링
 function renderCardList() {
   const list = document.getElementById("card-list");
   const emptyMsg = document.getElementById("empty-msg");
 
-  if (allCards.length === 0) {
+  if (filteredCards.length === 0) {
     list.innerHTML = "";
     emptyMsg.classList.remove("hidden");
     return;
@@ -101,7 +135,7 @@ function renderCardList() {
 
   emptyMsg.classList.add("hidden");
   const isConversation = currentCategory === "english_conversation";
-  list.innerHTML = allCards
+  list.innerHTML = filteredCards
     .map((c) => {
       const stats = getCardStats(c.id, currentCategory);
       const statsHtml =
@@ -130,12 +164,12 @@ function toggleCardDetail(el) {
 
 // 퀴즈
 document.getElementById("btn-quiz").addEventListener("click", () => {
-  if (allCards.length === 0) {
+  if (filteredCards.length === 0) {
     alert("카드가 없어요.");
     return;
   }
 
-  quizCards = [...allCards].sort(() => Math.random() - 0.5).slice(0, 10);
+  quizCards = [...filteredCards].sort(() => Math.random() - 0.5).slice(0, 10);
   quizIndex = 0;
   quizCorrect = 0;
   showPage("quiz");
