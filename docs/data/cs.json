@@ -306,5 +306,40 @@
     "back": "1) Undo Log: 트랜잭션 실패 시 원래 값으로 복원용 로그\n2) Redo Log (WAL): 커밋된 데이터를 장애 후 복구용 로그\n3) MVCC (Multi-Version Concurrency Control): 데이터의 여러 버전 유지. 읽기 시 Lock 없이 스냅샷 읽기.\n4) 2PL (Two-Phase Locking): Growing Phase(잠금 획득)와 Shrinking Phase(잠금 해제) 분리.",
     "example": "WAL (Write-Ahead Logging):\n→ 데이터 변경 전에 반드시 로그를 먼저 디스크에 기록\n→ 장애 시 로그 기반 복구\n\nMVCC (PostgreSQL, MySQL InnoDB):\n→ SELECT는 과거 버전 읽기 → Lock 불필요\n→ UPDATE는 새 버전 생성\n→ 읽기/쓰기 서로 Block하지 않음",
     "sub": "데이터베이스"
+  },
+  {
+    "id": 45,
+    "front": "SOLID 원칙 - SRP, OCP?",
+    "back": "SRP (단일 책임 원칙):\n클래스는 단 하나의 책임만 가져야 한다. 변경하는 이유가 하나뿐이어야 함.\n→ 하나의 클래스가 여러 역할을 하면 변경 시 사이드 이펙트 발생.\n\nOCP (개방-폐쇄 원칙):\n확장에는 열려 있고, 변경에는 닫혀 있어야 한다.\n→ 기존 코드를 수정하지 않고 새 기능을 추가할 수 있어야 함.",
+    "example": "SRP 위반:\nclass UserService {\n  saveUser() { ... }\n  sendEmail() { ... }  // 이메일은 별도 클래스로\n  generateReport() { ... }  // 리포트도 별도로\n}\n\nOCP 예시:\ninterface Shape { area(): number }\nclass Circle implements Shape { ... }\nclass Square implements Shape { ... }\n→ 새 도형 추가 시 기존 코드 수정 불필요",
+    "sub": "설계 원칙"
+  },
+  {
+    "id": 46,
+    "front": "SOLID 원칙 - LSP, ISP, DIP?",
+    "back": "LSP (리스코프 치환 원칙):\n상위 타입을 하위 타입으로 치환해도 프로그램이 정상 동작해야 한다.\n→ 자식 클래스가 부모의 계약을 깨면 안 됨.\n\nISP (인터페이스 분리 원칙):\n클라이언트가 사용하지 않는 메서드에 의존하지 않아야 한다.\n→ 범용 인터페이스 하나보다 전용 인터페이스 여러 개가 낫다.\n\nDIP (의존 역전 원칙):\n고수준 모듈이 저수준 모듈의 구현에 의존하면 안 된다. 둘 다 추상화에 의존해야 한다.",
+    "example": "LSP 위반:\nclass Bird { fly() {} }\nclass Penguin extends Bird { fly() { throw Error } }\n→ Bird를 Penguin으로 치환하면 오류\n\nISP 위반:\ninterface Worker { work(); eat(); sleep(); }\n→ Robot은 eat/sleep 불필요 → 인터페이스 분리\n\nDIP 예시:\nclass OrderService {\n  constructor(private repo: OrderRepository) {} // 인터페이스에 의존\n}\n→ 구현체(MySQL, Mongo 등)는 주입으로 교체 가능 (DI)",
+    "sub": "설계 원칙"
+  },
+  {
+    "id": 47,
+    "front": "REST 6가지 원칙?",
+    "back": "1) Uniform Interface: 통일된 인터페이스. URI로 리소스 식별, HTTP 메서드로 행위 표현.\n2) Stateless: 서버가 클라이언트 상태를 저장하지 않음. 매 요청에 필요한 정보 모두 포함.\n3) Caching: 응답에 캐시 가능 여부 명시. 클라이언트는 캐시된 응답 재사용.\n4) Client-Server: 클라이언트와 서버의 관심사 분리. 독립적 진화 가능.\n5) Hierarchical System (계층화): 클라이언트는 중간 서버(프록시, 로드밸런서) 존재 여부를 알 수 없음.\n6) Code on Demand (선택): 서버가 클라이언트에 실행 가능한 코드(JS 등)를 전송할 수 있음.",
+    "example": "Stateless가 중요한 이유:\n→ 서버 확장(Scale-out)이 쉬움\n→ 어떤 서버가 요청을 받아도 처리 가능\n→ 상태 관리는 클라이언트 책임 (토큰 등)\n\n계층화 예시:\n클라이언트 → CDN → 로드밸런서 → API서버 → DB\n클라이언트는 API서버와만 통신한다고 인식",
+    "sub": "설계 원칙"
+  },
+  {
+    "id": 48,
+    "front": "RESTful API 디자인이란?",
+    "back": "1) 리소스와 행위를 명시적으로 분리\n- 리소스: URI로 표현, 명사 사용 (예: /users, /orders)\n- 행위: HTTP Method (GET=조회, POST=생성, PUT=전체 수정, PATCH=일부 수정, DELETE=삭제)\n\n2) Header와 Body를 명확하게 분리\n- Body: 리소스 데이터(Entity)\n- Header: API 버전, MIME 타입, 인증 등 제어 정보\n\n3) API 버전 관리 + 하위호환성 보장\n4) 서버/클라이언트 요청 형식 통일 (JSON이면 둘 다 JSON)",
+    "example": "좋은 예:\nGET /users/123        (조회)\nPOST /users           (생성)\nPUT /users/123        (전체 수정)\nPATCH /users/123      (일부 수정)\nDELETE /users/123     (삭제)\n\n나쁜 예:\nGET /getUser?id=123\nPOST /deleteUser\n→ URI에 행위(동사)가 들어감",
+    "sub": "설계 원칙"
+  },
+  {
+    "id": 49,
+    "front": "REST API의 장단점?",
+    "back": "장점:\n1) Open API 제공이 쉬움\n2) 멀티플랫폼 지원 및 연동 용이 (웹, 모바일, IoT)\n3) 원하는 타입(JSON, XML 등)으로 데이터 주고받기 가능\n4) 기존 웹 인프라(HTTP)를 그대로 활용\n5) URI만 보고 API 의도를 직관적으로 파악\n\n단점:\n1) 사용 가능한 HTTP 메서드가 한정적 (GET, POST, PUT, DELETE 등)\n2) 분산 환경에는 부적합 (gRPC, 메시지 큐가 더 적합)\n3) HTTP 통신 모델에만 의존\n4) 표준 스펙이 없어 구현마다 차이",
+    "example": "REST 대안들:\n- GraphQL: 클라이언트가 필요한 데이터만 요청 (Over-fetching 해결)\n- gRPC: Protocol Buffers 기반, 바이너리 통신 (마이크로서비스 간 통신)\n- WebSocket: 양방향 실시간 통신 (채팅, 알림)\n\n실무에서는 REST + 필요에 따라 다른 방식 혼합 사용",
+    "sub": "설계 원칙"
   }
 ]
