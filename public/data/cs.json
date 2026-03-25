@@ -383,5 +383,194 @@
     "back": "핵심 답변:\n\"HTTP는 무상태(Stateless)라 서버가 클라이언트를 기억 못 합니다. 이를 보완하는 3가지 방법이 있습니다.\n\n1) Cookie: 클라이언트에 저장, 매 요청 시 자동 전송. 보안 취약.\n2) Session: 서버에 상태 저장, Session ID만 쿠키로 전달. 서버 메모리 사용.\n3) JWT (토큰): 서버가 상태를 저장하지 않고 토큰 자체에 정보 담음. Scale-out에 유리.\"",
     "example": "꼬리 질문 대비:\nQ: 세션 vs JWT 어떤 걸 쓸지 기준은?\nA: \"서버 확장이 중요하면 JWT (서버 간 세션 공유 불필요), 보안이 중요하면 Session (서버에서 즉시 무효화 가능). 실무에서는 Access Token(JWT, 짧은 만료) + Refresh Token(서버 저장, 긴 만료) 조합을 많이 씁니다.\"\n\nQ: JWT 단점은?\nA: \"한번 발급하면 만료 전까지 무효화가 어렵습니다. 탈취되면 위험하므로 만료 시간을 짧게 설정합니다.\"",
     "sub": "면접 팁"
+  },
+  {
+    "id": 56,
+    "front": "DIP(의존 역전 원칙) 실무 적용은?",
+    "back": "핵심: 구체적인 것에 의존하지 말고, 추상적인 것에 의존하라.\n\n고수준 모듈(비즈니스 로직)이 저수준 모듈(구현체)에 직접 의존하면 안 됨.\n둘 다 추상화(인터페이스)에 의존해야 함.\n\n왜 '역전'인가?\n전통: 고수준 → 저수준 의존\nDIP: 둘 다 추상화를 향해 의존 → 방향이 뒤집힘",
+    "example": "비유: 콘센트(고수준)가 '삼성 청소기 전용' 모양이면 LG 청소기 쓸 때 벽을 뜯어야 함.\n→ 220V 표준 규격(인터페이스)을 따르면 아무 제품이든 사용 가능.\n\nJava 예시:\ninterface Notifier { void send(String msg); }\nclass KakaoNotifier implements Notifier { ... }\nclass SmsNotifier implements Notifier { ... }\n\nclass ReservationService {\n  private final Notifier notifier; // 인터페이스에 의존!\n  // 카톡→문자 교체 시 Service 코드 변경 불필요\n}",
+    "sub": "설계 원칙"
+  },
+  {
+    "id": 57,
+    "front": "Spring의 DI(의존성 주입)와 DIP의 관계는?",
+    "back": "Spring은 DIP를 자동으로 지키게 해주는 프레임워크.\n\nController → Service(인터페이스) → ServiceImpl 구조에서:\n- Controller는 Service 인터페이스만 바라봄 (DIP 준수)\n- Spring이 알아서 ServiceImpl을 찾아 주입 (DI)\n\n@Autowired나 생성자 주입이 하는 일:\n\"어떤 구현체를 쓸지는 Spring이 결정, 개발자는 핵심 로직에만 집중\"",
+    "example": "@Service\npublic class ReservationService {\n    @Autowired\n    private Notifier notifier; // Spring이 구현체를 자동 주입\n}\n\n면접 대비:\nQ: 왜 Interface와 Impl을 나누나요?\nA: \"OCP(확장 시 기존 코드 수정 X) + 테스트 시 Mock 객체 주입이 가능해집니다.\n   구현체가 하나여도 분리하는 이유는 테스트와 미래 확장성 때문입니다.\"",
+    "sub": "설계 원칙"
+  },
+  {
+    "id": 58,
+    "front": "REST Stateless(무상태성) 상세 설명?",
+    "back": "서버는 클라이언트의 상태(맥락)를 저장하지 않는다.\n\n매 요청에 필요한 모든 정보를 클라이언트가 포함해서 보내야 함.\n\n장점:\n1) 서버 확장성: 어떤 서버가 받아도 처리 가능 (Scale-out 쉬움)\n2) 단순함: 서버는 요청만 처리하면 끝\n3) 장애 복구: 서버 교체되어도 문제 없음\n\n단점:\n- 매 요청마다 모든 정보를 보내야 해서 데이터 양이 많아짐",
+    "example": "비유 - 단기 기억상실증 점원:\nStateful: \"아까 주문하신 아아에 샷 추가요~\" (점원이 기억)\nStateless: \"아이스 아메리카노에 샷 추가 주세요\" (매번 전부 말해야 함)\n→ 점원이 바뀌어도(서버 교체) 주문에 문제 없음!\n\n인증 방식:\n로그인 시 서버가 JWT(출입증) 발급\n→ 클라이언트가 매 요청에 토큰 동봉\n→ 서버는 토큰만 검증 (기억 X)",
+    "sub": "네트워크"
+  },
+  {
+    "id": 59,
+    "front": "JWT 로그아웃은 어떻게 처리하나?",
+    "back": "JWT는 Stateless이므로 서버가 토큰을 무효화하기 어려움.\n로그아웃 = 클라이언트가 토큰을 삭제하는 것.\n\n문제: 토큰이 탈취되면 만료 전까지 여전히 유효함.\n\n해결 전략:\n1) 블랙리스트: 로그아웃된 토큰 ID를 목록에 등록 (약간 Stateful)\n2) 짧은 유효기간 + Refresh Token (가장 흔함):\n   - Access Token: 30분 (짧음)\n   - Refresh Token: 2주 (길음, 서버 DB 저장)\n   - 로그아웃 시: Refresh Token만 서버에서 삭제",
+    "example": "세션 vs JWT 로그아웃 비교:\n세션: 서버가 세션 저장소에서 삭제 → 즉시 무효화\nJWT: 클라이언트가 토큰 삭제 → 토큰 만료 전까지 유효\n\nAccess + Refresh Token 흐름:\n1) 로그인 → Access Token + Refresh Token 발급\n2) API 요청 → Access Token 사용\n3) Access Token 만료 → Refresh Token으로 재발급\n4) 로그아웃 → Refresh Token 삭제 → 재발급 불가",
+    "sub": "네트워크"
+  },
+  {
+    "id": 60,
+    "front": "세션(Session) vs 토큰(JWT) 인증 방식?",
+    "back": "세션 기반:\n- 상태 저장: 서버 메모리/DB에 저장\n- 확장성: 서버 늘어나면 세션 공유 복잡 (Sticky Session, Redis 등)\n- 플랫폼: 주로 웹 브라우저에 최적화\n- 방식: Stateful (서버가 기억)\n\n토큰(JWT) 기반:\n- 상태 저장: 클라이언트에 저장\n- 확장성: 서버 몇 대든 토큰만 검증하면 끝\n- 플랫폼: 모바일 앱, 웹, 외부 서비스 연동에 유리\n- 방식: Stateless (서버는 잊음)",
+    "example": "학습 경로:\n전통적 백엔드(Java Spring): 세션부터 배움 (HttpSession)\n프론트엔드/풀스택(React, Vue): JWT부터 배움\n\n선택 기준:\n- 서버 확장 중요 → JWT\n- 즉시 무효화(보안) 중요 → Session\n- 실무 표준: Access Token(JWT) + Refresh Token 조합",
+    "sub": "네트워크"
+  },
+  {
+    "id": 61,
+    "front": "TCP 4-way Handshake (연결 해제)란?",
+    "back": "TCP 연결을 안전하게 종료하는 4단계 과정.\n\n1) FIN: 클라이언트 → 서버 (나 할 말 다 했어, 갈게)\n2) ACK: 서버 → 클라이언트 (알겠어, 잠깐 기다려)\n   → 서버는 남은 데이터를 마저 전송\n3) FIN: 서버 → 클라이언트 (나도 다 끝났어, 갈게)\n4) ACK: 클라이언트 → 서버 (확인! 안녕)\n\n왜 3-way가 아니라 4-way?\n→ 한쪽이 종료 요청해도 상대방은 아직 보낼 데이터가 남아있을 수 있음.",
+    "example": "TIME_WAIT 상태:\n클라이언트가 마지막 ACK 보낸 후 바로 종료하지 않고 잠시 대기.\n→ 마지막 ACK가 유실되면 서버가 FIN을 재전송할 수 있으므로 대비.\n\n실무: 'Address already in use' 에러\n→ 서버 재시작 시 이전 연결의 TIME_WAIT 때문에 포트가 점유 중\n→ SO_REUSEADDR 옵션으로 해결 가능\n\n정리: 3-way는 '반가워!', 4-way는 '신중하게 안녕!'",
+    "sub": "네트워크"
+  },
+  {
+    "id": 62,
+    "front": "TCP의 전이중(Full-duplex)과 점대점(Point-to-point)이란?",
+    "back": "전이중 (Full-duplex):\n- 양방향 동시 통신 가능 (전화처럼 동시에 말하고 들을 수 있음)\n- 비교: 단방향(라디오), 반이중(무전기 - 한쪽만 말 가능)\n\n점대점 (Point-to-point):\n- 1:1 전용 연결 (두 지점 사이에서만 통신)\n- 중간에 다른 사람 끼어들 수 없음\n\nTCP가 브로드캐스팅을 못하는 이유:\n→ TCP는 매 데이터마다 ACK 확인이 필요\n→ 1000명에게 보내면 1000개 ACK를 기다려야 함\n→ 한 명이 지연되면 전체 통신 멈춤",
+    "example": "통신 방식 비교:\n단방향(Simplex): TV, 라디오\n반이중(Half-duplex): 무전기 (오버!)\n전이중(Full-duplex): 전화, TCP\n\nTCP vs UDP 방송 능력:\nTCP: 1:1만 가능 (확인 도장 때문)\nUDP: 브로드캐스팅/멀티캐스팅 가능 (던지고 끝)\n→ 스트리밍, 게임, DNS는 UDP 사용",
+    "sub": "네트워크"
+  },
+  {
+    "id": 63,
+    "front": "Spring Boot 동작 과정은?",
+    "back": "1) Main 메서드: SpringApplication.run() 실행\n2) 설정 로드: application.properties 등 읽기\n3) 컴포넌트 스캔: @Component, @Service, @Controller 클래스 탐색\n4) 빈(Bean) 생성 및 주입: 객체 생성 후 @Autowired에 DI\n5) 내장 서버 실행: 톰캣 자동 실행, 요청 수신 대기\n\n요청 처리 흐름:\n사용자 → 톰캣(HTTP 수신) → Controller → Service → Mapper/Repository → DB → 역순 응답",
+    "example": "레스토랑 비유:\n톰캣 = 리셉션 (손님 맞이, 메뉴 확인)\nController = 홀 매니저 (주문 전달)\nService = 요리사 (비즈니스 로직 수행)\nDB = 창고 (재료/데이터 보관)\n\n전통 Spring vs Spring Boot:\nSpring: 설정을 XML이나 Java로 일일이 해야 함\nSpring Boot: 자동 설정(Auto Configuration)으로 대부분 생략",
+    "sub": "인프라"
+  },
+  {
+    "id": 64,
+    "front": "WAR vs JAR 배포 방식의 차이는?",
+    "back": "WAR (Web Archive):\n- 전통적인 방식. 외부 톰캣 서버가 필요함.\n- 톰캣 아파트에 입주시키는 방식. 한 톰캣에 여러 앱 가능.\n- 이클립스에서 톰캣 서버 추가 후 실행하던 방식.\n\nJAR (Java Archive):\n- Spring Boot 기본 방식. 내장 톰캣 포함.\n- java -jar app.jar 한 줄로 어디서든 실행.\n- 배포가 매우 간편. 요즘 대세.\n\n'말아준다' = 코드와 설정을 하나의 파일로 패키징하는 것.",
+    "example": "빌드 명령어:\nGradle: ./gradlew build → build/libs/*.jar\nMaven: ./mvnw package → target/*.jar\n\n비유:\nWAR: 재료만 준비, 주방(톰캣)은 따로 마련해야 함\nJAR: 재료 + 휴대용 가스레인지(내장 톰캣) 세트\n\n실무 대화:\n\"이번 버전 JAR로 말아서 올려주세요\"\n= 실행 가능한 파일로 빌드해서 배포해달라",
+    "sub": "인프라"
+  },
+  {
+    "id": 65,
+    "front": "온프레미스 vs 클라우드(AWS) 배포?",
+    "back": "온프레미스 (On-Premise):\n- 회사에 실물 서버 직접 구매/설치\n- 전기, 냉각, 네트워크 직접 관리\n- 확장: 새 서버 주문~설치에 수주 소요\n- 보안: 물리적 통제 가능\n\n클라우드 (AWS 등):\n- 대기업 데이터센터의 서버를 빌려 씀\n- 클릭 몇 번으로 1분 만에 서버 생성\n- 오토 스케일링: 트래픽에 따라 자동 확장/축소\n- 사용한 만큼만 과금 (경제적)",
+    "example": "AWS 주요 서비스:\nEC2: 가상 컴퓨터 (빈 깡통, OS부터 설치)\nRDS: DB 전용 관리형 서비스 (백업/보안 자동)\nS3: 파일 저장소 (정적 배포용)\n\nEC2 배포 과정:\n1) EC2 생성 (Ubuntu)\n2) Java 설치 (sudo apt install openjdk)\n3) Git으로 코드 가져오기\n4) ./gradlew build → java -jar 실행",
+    "sub": "인프라"
+  },
+  {
+    "id": 66,
+    "front": "CI/CD와 무중단 배포란?",
+    "back": "CI (Continuous Integration): 코드 Push 시 자동 빌드 + 테스트\nCD (Continuous Deployment): 빌드 결과물을 자동으로 서버에 배포\n\n도구: Jenkins, GitHub Actions 등\n→ 젠킨스는 '심부름꾼' (스크립트대로만 실행)\n\n무중단 배포 방식:\n1) 롤링 배포: 서버를 하나씩 순차적으로 교체\n2) 블루-그린: 동일한 서버 세트 2개, 한꺼번에 전환\n3) 카나리: 일부 트래픽만 새 버전으로 보내서 테스트",
+    "example": "젠킨스 동작 과정:\n1) Webhook: Push 감지 → 젠킨스에 신호\n2) Pull: 최신 코드 다운로드\n3) Build: ./gradlew build → JAR 생성\n4) Deploy: 서버로 파일 복사\n5) Restart: 서비스 재시작\n\n주의: 젠킨스 자체는 무중단 보장 X\n→ 스크립트에 롤링/블루-그린 전략 + 로드밸런서(Nginx) 필요",
+    "sub": "인프라"
+  },
+  {
+    "id": 67,
+    "front": "Gradle vs Maven 차이는?",
+    "back": "둘 다 Java 빌드 도구 (라이브러리 관리 + 컴파일 + 패키징).\n\nMaven (pom.xml):\n- XML 기반. 코드가 길고 중복 많음.\n- 매번 처음부터 빌드 (느림)\n- 정해진 틀 안에서만 동작\n\nGradle (build.gradle):\n- Groovy/Kotlin 기반. 간결하고 읽기 쉬움.\n- 바뀐 부분만 빌드 (증분 빌드, 압도적으로 빠름)\n- 코드로 로직 작성 가능 (유연함)\n\n요즘 신규 프로젝트는 거의 Gradle 사용.",
+    "example": "Maven 비유: \"딱 이 양식대로만 적어!\" - 깐깐한 설명서\nGradle 비유: \"코드로 짜줄게, 알아서 빌드해!\" - 유능한 비서\n\nbuild.gradle 예시:\nplugins { id 'java' }\ndependencies {\n  implementation 'org.springframework.boot:spring-boot-starter-web'\n}\n\npom.xml은 같은 내용을 적어도 2~3배 더 길어짐",
+    "sub": "인프라"
+  },
+  {
+    "id": 68,
+    "front": "트랜잭션과 외부 API 호출 시 주의할 점은?",
+    "back": "DB 트랜잭션은 롤백 가능하지만, 이미 호출된 외부 API(카톡, 결제)는 롤백 불가!\n\n위험 상황:\n예약 DB 저장 → 카톡 발송(API) → 결제 정보 업데이트(실패!)\n→ DB 롤백됐지만 '예약 완료' 카톡은 이미 발송됨\n\n해결 전략:\n1) API 호출은 트랜잭션 커밋 후 마지막에 수행\n2) 보상 트랜잭션(Compensating Transaction): 실패 시 반대 작업 실행\n3) SAGA 패턴: 각 단계별 보상 로직 정의",
+    "example": "보상 트랜잭션 예시 (항공권 예약):\n[작업1] 결제 완료 (카드사 API)\n[작업2] 좌석 예약 (DB 저장 - 실패!)\n[보상] 결제 취소 API 호출 → 환불\n\n@Transactional 주의:\n- RuntimeException → 자동 롤백\n- 자바 변수는 롤백 안 됨 (DB만 롤백)\n- 트랜잭션 범위를 최소화할 것 (Lock 점유 시간 줄이기)\n- 트랜잭션 안에서 외부 API 호출 지양!",
+    "sub": "데이터베이스"
+  },
+  {
+    "id": 69,
+    "front": "AWS EC2 vs RDS의 차이는?",
+    "back": "EC2 (Elastic Compute Cloud):\n- 빈 가상 컴퓨터. OS, Java, DB 등 직접 설치.\n- 자유도 높지만 관리 부담 큼.\n- 서버 고장 시 DB 데이터도 함께 위험.\n\nRDS (Relational Database Service):\n- DB 전용 관리형 서비스.\n- 백업, 업데이트, 보안을 AWS가 자동 관리.\n- EC2가 터져도 DB 데이터는 안전.\n\nEC2 단독: localhost:3306 연결\nEC2 + RDS: RDS 엔드포인트 주소 + 보안 그룹(포트 오픈) 필요.",
+    "example": "EC2 단독 (가내수공업):\nEC2에 Java + MySQL 모두 설치\n→ 싸지만 서버 장애 시 DB도 날아감\n\nEC2 + RDS (분업):\nEC2: Java만 (애플리케이션 서버)\nRDS: MySQL만 (AWS가 자동 백업)\n→ 비싸지만 안전하고 편함\n\napplication.properties:\nspring.datasource.url=jdbc:mysql://my-rds-endpoint:3306/mydb",
+    "sub": "인프라"
+  },
+  {
+    "id": 70,
+    "front": "정적 배포 vs 동적 배포의 차이는?",
+    "back": "정적 배포 (Frontend):\n- 내용물: HTML, CSS, JS, 이미지 (이미 완성된 파일)\n- 서버 역할: 파일 전달만 (연산 없음)\n- 배포: S3에 파일 업로드 + CDN(CloudFront)으로 배포\n- 비유: 완성된 통조림 진열\n\n동적 배포 (Backend):\n- 내용물: JAR/WAR (실행해야 하는 프로그램)\n- 서버 역할: 요청마다 계산/연산 수행\n- 배포: EC2에서 프로세스 재시작\n- 비유: 손님 올 때마다 요리하는 주방",
+    "example": "AWS 콘솔에서의 차이:\nS3: 구글 드라이브 느낌. 파일 목록만 보임. CPU 사용량 없음.\nEC2: 진짜 컴퓨터. CPU 그래프, 메모리, IP 주소 등 보임.\n\n프론트엔드가 정적인 이유:\nReact/Next.js 빌드 → 브라우저가 읽는 파일 뭉치 생성\n→ S3에 올리고 CDN으로 전 세계 배포",
+    "sub": "인프라"
+  },
+  {
+    "id": 71,
+    "front": "DB 스키마 변경 시 무중단 배포는? (Expand & Contract)",
+    "back": "문제: 서버 2대(구/신버전) + DB 1대일 때\n→ 신버전에 맞춰 컬럼을 바꾸면 구버전 서버가 에러\n\nExpand & Contract 패턴 (3단계):\n\n1단계 확장(Expand):\n새 컬럼 추가 (NULL 허용). 구/신버전 모두 동작 가능.\n\n2단계 이사 및 배포:\n모든 서버를 신버전으로 교체. 필요시 데이터 마이그레이션.\n\n3단계 수축(Contract):\n구 컬럼 아무도 안 쓰는 걸 확인 후 삭제.",
+    "example": "핵심 원칙:\n\"구버전과 신버전이 모두 만족할 수 있는 중간 상태를 거쳐 진행\"\n\n예시: nickname 컬럼을 display_name으로 변경\n1) display_name 컬럼 추가 (NULL 허용)\n2) 신버전 서버: display_name 사용, nickname 데이터를 복사\n3) 모든 서버가 신버전 확인 → nickname 컬럼 삭제",
+    "sub": "인프라"
+  },
+  {
+    "id": 72,
+    "front": "Java(멀티스레드) vs Node.js(싱글스레드)?",
+    "back": "Java (Spring):\n- 멀티스레드 방식. 요청마다 스레드 할당 (Thread Pool).\n- 장점: 복잡한 계산, 무거운 작업에 강함.\n- 대규모/엔터프라이즈(은행, 대형 플랫폼) 선호.\n\nNode.js:\n- 싱글스레드 + Event Loop. 요리사 한 명이 초고속으로 처리.\n- 장점: 단순한 요청이 대량일 때 가볍고 빠름 (채팅 등).\n- 스타트업/소규모에서 빠른 개발 시 선호.\n\nNestJS: Spring과 구조 유사 (Controller, Service 패턴).",
+    "example": "비유:\nJava: 요리사 10명 고용, 각각 손님 1명 전담\nNode.js: 초고속 요리사 1명, 주문받고 요리되는 동안 다음 주문 처리\n\n프로젝트 규모별 선택:\n스타트업: Node.js, Python (개발 속도 중시)\n대규모: Java/Spring (안정성, 유지보수 중시)\n\nNext.js 백엔드:\n가능하지만 복잡한 비즈니스 로직(정산 등)에는 부적합\n→ 가벼운 API 용도로 적합",
+    "sub": "인프라"
+  },
+  {
+    "id": 73,
+    "front": "REST API가 HTTP 통신 모델만 지원하는 것의 한계는?",
+    "back": "REST는 Request-Response 모델. 서버가 먼저 클라이언트에게 연락 불가.\n\n한계가 드러나는 상황:\n1) 실시간성: 주식 차트, 채팅 → 서버가 먼저 알려줄 수 없음 (폴링 필요)\n2) 대용량 전송: HTTP 헤더가 매번 무거움\n3) IoT: HTTP 연결 과정이 전력 소모 큼\n\n대안:\n- WebSocket: 양방향 실시간 통신 (채팅, 게임)\n- gRPC: 바이너리 기반 초고속 통신 (마이크로서비스)\n- MQTT: IoT용 초경량 프로토콜",
+    "example": "비유: REST = 편지 우체국\n내가 편지를 보내야만 답장이 옴.\n생방송/실시간 채팅은 매초 \"편지 왔나요?\" 물어봐야 함 (폴링).\n\n현대 시스템 설계:\n일반 기능 → REST API\n실시간 기능 → WebSocket\n서비스 간 통신 → gRPC\n\n비교:\nREST: 문답형, Stateless, 일반 웹 서비스\nWebSocket: 대화형, 연결 유지, 채팅/게임/실시간 차트",
+    "sub": "네트워크"
+  },
+  {
+    "id": 74,
+    "front": "Spring Boot vs NestJS 프로젝트 구조 비교?",
+    "back": "Spring Boot (Java):\nController → Service(Interface) → ServiceImpl → Mapper(MyBatis) → DB\n- 인터페이스/구현체 분리가 관례\n- @Service, @Controller, @Autowired로 DI\n- XML 또는 어노테이션 기반 설정\n\nNestJS (Node.js/TypeScript):\nController → Service → Repository(Prisma) → DB\n- Spring과 구조가 거의 동일 (데코레이터 기반)\n- @Injectable(), @Controller() 사용\n- 모듈(Module) 단위로 기능 분리\n\n공통점: 둘 다 Controller-Service-Repository 계층 구조를 따름.",
+    "example": "Spring Boot:\n@RestController\npublic class UserController {\n  @Autowired\n  private UserService userService;\n  @GetMapping(\"/users\")\n  public List<User> getUsers() { return userService.findAll(); }\n}\n\nNestJS:\n@Controller('users')\nexport class UserController {\n  constructor(private userService: UserService) {}\n  @Get()\n  getUsers() { return this.userService.findAll(); }\n}\n→ 구조가 거의 똑같다!",
+    "sub": "프레임워크 비교"
+  },
+  {
+    "id": 75,
+    "front": "MyBatis vs Prisma (ORM/쿼리 매퍼 비교)?",
+    "back": "MyBatis (Java/Spring):\n- SQL Mapper. SQL을 직접 작성 (XML 또는 어노테이션).\n- 복잡한 쿼리, 통계, 대량 조회에 강함.\n- SQL을 완전히 제어 가능.\n- 단점: XML 파일 관리 번거로움, 반복 코드 많음.\n\nPrisma (Node.js/TypeScript):\n- ORM. 코드로 DB를 다룸 (SQL 안 써도 됨).\n- schema.prisma 파일로 모델 정의 → 자동 마이그레이션.\n- 타입 안전성 (자동 타입 생성).\n- 단점: 복잡한 쿼리는 Raw SQL로 직접 작성 필요.\n\n공통점: 둘 다 DB와 코드 사이의 다리 역할.",
+    "example": "MyBatis (XML):\n<select id=\"findByAge\" resultType=\"User\">\n  SELECT * FROM users WHERE age > #{age}\n</select>\n\nPrisma:\nconst users = await prisma.user.findMany({\n  where: { age: { gt: age } }\n});\n\n복잡한 쿼리는 둘 다 Raw SQL:\nMyBatis: XML에 복잡한 SQL 직접 작성\nPrisma: prisma.$queryRaw`SELECT ...`\n\nJPA와 비교: Prisma ≈ JPA (둘 다 ORM), MyBatis는 SQL Mapper",
+    "sub": "프레임워크 비교"
+  },
+  {
+    "id": 76,
+    "front": "Tomcat vs Node.js 내장 서버의 차이?",
+    "back": "Tomcat (Java/Spring):\n- 서블릿 컨테이너. HTTP 요청을 받아 Java 코드로 전달.\n- 멀티스레드: 요청마다 Thread를 할당 (Thread Pool).\n- Spring Boot는 Tomcat을 내장 → JAR에 포함.\n- 전통 방식: 외부 Tomcat에 WAR 배포.\n\nNode.js 내장 서버:\n- HTTP 모듈 자체 내장. 별도 서버 소프트웨어 불필요.\n- 싱글스레드 + Event Loop: 비동기 I/O로 동시성 처리.\n- NestJS/Next.js가 이 위에서 동작.\n- PM2로 프로세스 관리 (클러스터 모드로 멀티코어 활용).",
+    "example": "Spring Boot 실행:\njava -jar app.jar → 내장 Tomcat이 8080 포트 리스닝\n\nNestJS 실행:\nnpm run start → Node.js HTTP 서버가 3000 포트 리스닝\n\n요청 처리 방식:\nTomcat: 요청 → Thread Pool에서 스레드 1개 배정 → 처리 → 반환\nNode.js: 요청 → Event Loop가 받음 → I/O는 OS에 위임 → 콜백으로 응답\n\n동시 요청 1000개:\nTomcat: 스레드 200개 → 나머지 800개 대기\nNode.js: 1개 스레드로 전부 처리 (I/O 대기 시간 활용)",
+    "sub": "프레임워크 비교"
+  },
+  {
+    "id": 77,
+    "front": "Spring + MyBatis vs NestJS + Prisma 개발 흐름 비교?",
+    "back": "Spring + MyBatis:\n1) Entity(VO/DTO) 클래스 작성\n2) Mapper 인터페이스 + XML(SQL) 작성\n3) Service 인터페이스 + ServiceImpl 작성\n4) Controller 작성\n5) 빌드: ./gradlew build → JAR\n6) 배포: java -jar app.jar\n\nNestJS + Prisma:\n1) schema.prisma에 모델 정의\n2) npx prisma migrate dev → DB 테이블 자동 생성 + 타입 생성\n3) Service 작성 (prisma.model.findMany() 등)\n4) Controller 작성\n5) 빌드: npm run build\n6) 배포: node dist/main.js 또는 PM2",
+    "example": "DB 테이블 추가 시:\nSpring+MyBatis:\n→ SQL로 테이블 생성 → VO 클래스 → Mapper XML → Service → Controller\n→ 파일 4~5개 수정 필요\n\nNestJS+Prisma:\n→ schema.prisma에 모델 추가 → prisma migrate → Service → Controller\n→ 스키마 1개 수정하면 타입/마이그레이션 자동 생성\n\n개발 속도: NestJS+Prisma가 빠름 (보일러플레이트 적음)\n안정성/제어력: Spring+MyBatis가 강함 (SQL 직접 제어)",
+    "sub": "프레임워크 비교"
+  },
+  {
+    "id": 78,
+    "front": "Spring 프로젝트 vs Node 프로젝트의 타입 시스템 차이?",
+    "back": "Java (Spring):\n- 정적 타입 언어. 컴파일 시 타입 오류 잡아줌.\n- 클래스, 인터페이스가 엄격. 코드가 길지만 안전함.\n- IDE 지원 강력 (자동완성, 리팩토링).\n- 여러 명이 협업할 때 실수를 줄여줌.\n\nTypeScript (NestJS/Next.js):\n- JavaScript에 타입을 추가한 언어.\n- Java보다 유연하지만, any 남발하면 의미 없음.\n- 인터페이스, 제네릭 등 Java와 비슷한 문법 지원.\n- 런타임에서는 타입 사라짐 (컴파일 타임만 검사).\n\nJavaScript: 타입 없음. 자유롭지만 버그 위험 높음.",
+    "example": "Java:\npublic class User {\n  private String name;  // 무조건 String이어야 함\n  private int age;      // 무조건 int\n}\n\nTypeScript:\ninterface User {\n  name: string;  // 컴파일 시 검사\n  age: number;\n}\n\nJavaScript:\nconst user = { name: 123 }; // 숫자를 넣어도 에러 안 남\n\n실무 선택:\n대규모 팀/장기 프로젝트 → Java (엄격한 타입)\n빠른 개발/소규모 → TypeScript (적당한 타입 안전성)",
+    "sub": "프레임워크 비교"
+  },
+  {
+    "id": 79,
+    "front": "Spring Boot + MyBatis + MySQL vs NestJS + Prisma + PostgreSQL 스택 비교?",
+    "back": "Java 스택 (전통 엔터프라이즈):\n- Spring Boot: 프레임워크 (자동 설정, DI, 보안)\n- MyBatis: SQL Mapper (SQL 직접 제어)\n- MySQL: RDBMS (국내 점유율 높음)\n- Tomcat: 웹서버 (내장)\n- Gradle/Maven: 빌드 도구\n\nNode 스택 (모던 풀스택):\n- NestJS: 프레임워크 (Spring과 구조 유사)\n- Prisma: ORM (스키마 기반 자동 생성)\n- PostgreSQL: RDBMS (JSON 지원, 확장성)\n- Node.js: 런타임 (내장 HTTP)\n- npm/yarn: 패키지 관리자",
+    "example": "각 스택이 잘 맞는 상황:\n\nJava 스택:\n- 금융, 공공, 대기업 SI\n- 복잡한 비즈니스 로직 + 트랜잭션 관리\n- 레거시 시스템 연동\n- 대규모 팀 협업 (엄격한 규칙)\n\nNode 스택:\n- 스타트업, SaaS, 실시간 서비스\n- 빠른 프로토타이핑 + MVP 개발\n- 프론트엔드(React/Next.js)와 언어 통일\n- 소규모 팀, 풀스택 개발자",
+    "sub": "프레임워크 비교"
+  },
+  {
+    "id": 80,
+    "front": "Next.js의 SSR/SSG/CSR 차이는?",
+    "back": "CSR (Client-Side Rendering):\n- 브라우저가 JS 다운 후 화면 그림. 빈 HTML → JS로 채움.\n- 장점: 페이지 전환 빠름 (SPA)\n- 단점: 초기 로딩 느림, SEO 불리\n\nSSR (Server-Side Rendering):\n- 서버에서 HTML을 완성해서 보냄. 매 요청마다 서버가 렌더링.\n- 장점: SEO 유리, 초기 로딩 빠름\n- 단점: 서버 부하, TTFB(첫 바이트) 느림\n\nSSG (Static Site Generation):\n- 빌드 시점에 HTML을 미리 생성. CDN으로 배포.\n- 장점: 가장 빠름, SEO 최적\n- 단점: 데이터 변경 시 재빌드 필요 (ISR로 보완)",
+    "example": "Next.js에서의 사용:\nSSR: 실시간 데이터 필요한 페이지 (마이페이지, 대시보드)\nSSG: 변경 적은 페이지 (블로그, 공지사항)\nCSR: 로그인 후 인터랙션 위주 페이지\n\nSpring(Thymeleaf)과 비교:\nThymeleaf = SSR (서버에서 HTML 완성)\nNext.js = SSR + SSG + CSR 선택 가능\n\nISR (Incremental Static Regeneration):\nSSG인데 일정 시간마다 자동 재생성 → SSG + SSR 장점 결합",
+    "sub": "프레임워크 비교"
+  },
+  {
+    "id": 81,
+    "front": "Spring 프로젝트 vs Node 프로젝트의 배포 방식 차이?",
+    "back": "Spring Boot 배포:\n1) ./gradlew build → JAR 파일 생성\n2) EC2에 Java 설치\n3) java -jar app.jar 실행\n4) 또는 Docker 컨테이너로 배포\n→ JAR 하나에 Tomcat + 코드 포함\n\nNestJS + Next.js 배포:\n1) npm run build → dist/또는 .next/ 생성\n2) NestJS: node dist/main.js (EC2 또는 Docker)\n3) Next.js: Vercel(자동배포) 또는 EC2에서 npm start\n4) 프론트 정적파일: S3 + CloudFront\n→ 프론트/백엔드 분리 배포가 자연스러움",
+    "example": "Docker 배포 시:\nSpring: JDK 이미지 → JAR 복사 → java -jar\nNestJS: Node 이미지 → npm install → node dist/main\n\n프로세스 관리:\nSpring: systemd 또는 Docker\nNode.js: PM2 (클러스터, 자동 재시작, 로그 관리)\n\n모노레포 배포 (NestJS + Next.js):\n→ 하나의 저장소에서 백엔드/프론트 동시 관리\n→ Turborepo, Nx로 빌드 최적화",
+    "sub": "프레임워크 비교"
+  },
+  {
+    "id": 82,
+    "front": "[면접팁] Java Spring 경험자가 Node 프로젝트에서 느끼는 차이점은?",
+    "back": "1) 인터페이스/Impl 분리:\nSpring: 관례적으로 항상 분리 (Service → ServiceImpl)\nNestJS: 분리 안 해도 됨. Service 클래스를 바로 사용.\n\n2) SQL 작성:\nMyBatis: XML에 SQL 직접 작성 (세밀한 제어)\nPrisma: 코드로 쿼리 (prisma.user.findMany())\n→ 복잡한 쿼리는 Raw SQL 사용\n\n3) 비동기 처리:\nSpring: 기본이 동기/블로킹. 비동기는 별도 설정 필요.\nNode.js: 기본이 비동기. async/await로 제어.\n→ 콜백 지옥, Promise 체이닝 이해 필요.",
+    "example": "4) 에러 처리:\nSpring: @ControllerAdvice + @ExceptionHandler\nNestJS: @Catch() + ExceptionFilter\n\n5) 설정 파일:\nSpring: application.properties / application.yml\nNestJS: .env + ConfigModule\n\n6) 빌드/실행:\nSpring: ./gradlew build → java -jar\nNestJS: npm run build → node dist/main\n\n전환 팁:\n\"NestJS는 Spring을 Node.js로 옮겨놓은 느낌.\nController, Service, Module, DI 개념이 거의 동일.\nSpring 경험이 있으면 NestJS 적응이 매우 빠름.\"",
+    "sub": "면접 팁"
   }
 ]
