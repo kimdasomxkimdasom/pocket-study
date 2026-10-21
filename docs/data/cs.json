@@ -572,5 +572,285 @@
     "back": "1) 인터페이스/Impl 분리:\nSpring: 관례적으로 항상 분리 (Service → ServiceImpl)\nNestJS: 분리 안 해도 됨. Service 클래스를 바로 사용.\n\n2) SQL 작성:\nMyBatis: XML에 SQL 직접 작성 (세밀한 제어)\nPrisma: 코드로 쿼리 (prisma.user.findMany())\n→ 복잡한 쿼리는 Raw SQL 사용\n\n3) 비동기 처리:\nSpring: 기본이 동기/블로킹. 비동기는 별도 설정 필요.\nNode.js: 기본이 비동기. async/await로 제어.\n→ 콜백 지옥, Promise 체이닝 이해 필요.",
     "example": "4) 에러 처리:\nSpring: @ControllerAdvice + @ExceptionHandler\nNestJS: @Catch() + ExceptionFilter\n\n5) 설정 파일:\nSpring: application.properties / application.yml\nNestJS: .env + ConfigModule\n\n6) 빌드/실행:\nSpring: ./gradlew build → java -jar\nNestJS: npm run build → node dist/main\n\n전환 팁:\n\"NestJS는 Spring을 Node.js로 옮겨놓은 느낌.\nController, Service, Module, DI 개념이 거의 동일.\nSpring 경험이 있으면 NestJS 적응이 매우 빠름.\"",
     "sub": "면접 팁"
+  },
+  {
+    "id": 83,
+    "front": "Spring MVC 요청 처리 흐름은?",
+    "back": "1) Filter: 서블릿 단계 (인코딩, 로그 ID, multipart)\n2) DispatcherServlet: 모든 요청의 입구\n3) HandlerMapping: URL로 컨트롤러 메서드 찾기\n4) Interceptor preHandle: 로그인, 권한 확인\n5) HandlerAdapter + ArgumentResolver: 파라미터를 객체로 바인딩\n6) Controller -> Service -> DAO/Repository\n7) 반환값 처리\n- @ResponseBody: MessageConverter(Jackson)가 JSON으로 변환\n- 뷰 이름: ViewResolver가 JSP 등 템플릿 렌더링\n8) 예외: @ControllerAdvice가 받아 응답으로 변환",
+    "example": "한 줄 암기:\n필터 -> DispatcherServlet -> 인터셉터 -> ArgumentResolver -> 컨트롤러 -> (JSON: MessageConverter / 화면: ViewResolver) -> ControllerAdvice\n\nAjax 요청과 화면 요청 구분:\njQuery ajax는 X-Requested-With: XMLHttpRequest 헤더를 붙임\n-> 세션 만료 시 화면이면 로그인 페이지로 redirect, ajax면 401 응답",
+    "sub": "Spring"
+  },
+  {
+    "id": 84,
+    "front": "필터(Filter)와 인터셉터(Interceptor)의 차이?",
+    "back": "Filter:\n- 서블릿 컨테이너 단계 (스프링 밖)\n- 정적 파일 포함 모든 요청에 적용\n- 요청/응답 객체 자체를 바꿀 수 있음 (래핑)\n- 용도: 인코딩, 로그 추적 ID(MDC), XSS 필터, CORS\n\nInterceptor:\n- DispatcherServlet 안 (스프링 MVC 단계)\n- 어떤 컨트롤러 메서드가 호출될지 앎 (HandlerMethod)\n- 메서드의 어노테이션을 읽어 처리 가능\n- 용도: 로그인 체크, 메뉴 권한 확인",
+    "example": "예: @MenuAuth 같은 커스텀 어노테이션으로 권한을 확인하려면\n-> 핸들러 정보가 필요하므로 인터셉터에서 처리\n\n예: 모든 요청에 로그 추적 ID 부여\n-> 필터에서 처리\n\n@Controller vs @RestController:\n@RestController = @Controller + @ResponseBody\n-> 모든 메서드가 JSON 반환",
+    "sub": "Spring"
+  },
+  {
+    "id": 85,
+    "front": "IoC와 DI, 생성자 주입을 권장하는 이유는?",
+    "back": "IoC (제어의 역전):\n객체를 내가 new로 만들지 않고, 스프링 컨테이너가 생성하고 생명주기를 관리\n\nDI (의존성 주입):\n필요한 객체를 컨테이너가 넣어줌\n\n주입 방식: 필드 주입, 세터 주입, 생성자 주입\n\n생성자 주입 권장 이유:\n1) 필드를 final로 선언 가능 (불변)\n2) 필수 의존성이 빠지면 기동 시점에 실패\n3) 테스트에서 mock을 생성자로 직접 넣기 쉬움\n4) 순환 참조를 기동 시점에 발견",
+    "example": "@Service\npublic class PaymentService {\n  private final PaymentRepository repository;\n  private final PgClient pgClient;\n\n  public PaymentService(PaymentRepository repository, PgClient pgClient) {\n    this.repository = repository;\n    this.pgClient = pgClient;\n  }\n}\n\n같은 타입 빈이 여러 개면?\n-> @Primary로 기본값, @Qualifier(\"이름\")로 선택\n(예: 쓰기 DB / 읽기 DB DataSource가 각각 있을 때)",
+    "sub": "Spring"
+  },
+  {
+    "id": 86,
+    "front": "스프링 싱글톤 빈의 주의점은?",
+    "back": "스프링 빈은 기본 스코프가 싱글톤.\n-> 여러 요청(스레드)이 같은 객체를 동시에 사용\n\n주의:\n필드에 요청별 상태를 저장하면 안 됨\n-> 다른 요청의 값이 섞이는 동시성 버그 발생\n\n요청별 값은:\n- 메서드 지역 변수, 파라미터로 전달\n- 꼭 필요하면 ThreadLocal (요청 끝나면 반드시 remove)\n\n상태가 없는(stateless) 서비스로 설계하는 것이 원칙",
+    "example": "잘못된 예:\n@Service\npublic class OrderService {\n  private Long currentUserId; // 모든 요청이 공유!\n\n  public void order(Long userId) {\n    this.currentUserId = userId;\n    ... // 다른 스레드가 덮어쓸 수 있음\n  }\n}\n\n다른 스코프: prototype(매번 새로), request, session",
+    "sub": "Spring"
+  },
+  {
+    "id": 87,
+    "front": "AOP란? 스프링 AOP의 동작 방식은?",
+    "back": "AOP (관점 지향 프로그래밍):\n로그, 트랜잭션, 권한처럼 여러 곳에 반복되는 공통 관심사를 핵심 로직에서 분리\n\n용어:\n- Aspect: 공통 기능 모듈\n- Advice: 실제 실행할 코드 (Before, After, Around)\n- Pointcut: 어디에 적용할지 (표현식)\n- JoinPoint: 적용 지점 (메서드 실행)\n\n스프링 AOP는 프록시 기반:\n빈을 프록시 객체로 감싸서, 메서드 호출을 가로채 앞뒤에 공통 로직 실행\n- 인터페이스 있으면 JDK 동적 프록시, 없으면 CGLIB",
+    "example": "@Aspect\n@Component\npublic class LoggingAspect {\n  @Around(\"execution(* com.example.service..*(..))\")\n  public Object log(ProceedingJoinPoint pjp) throws Throwable {\n    long start = System.currentTimeMillis();\n    Object result = pjp.proceed();\n    log.info(\"{} {}ms\", pjp.getSignature(), System.currentTimeMillis() - start);\n    return result;\n  }\n}\n\n대표 예: @Transactional, @Cacheable, @Async 모두 프록시로 동작",
+    "sub": "Spring"
+  },
+  {
+    "id": 88,
+    "front": "@Transactional은 내부적으로 어떻게 동작하나?",
+    "back": "1) 프록시가 메서드 호출을 가로챔\n2) 시작 전에 커넥션을 얻어 autoCommit = false\n3) 커넥션을 ThreadLocal(TransactionSynchronizationManager)에 묶음\n-> 같은 스레드의 DAO/Repository가 같은 커넥션 사용\n4) 정상 종료: 커밋\n5) 런타임 예외(Unchecked): 롤백\n6) 커넥션 반납\n\n선언 방식:\n- 어노테이션 (@Transactional)\n- AOP 포인트컷으로 패키지 전체에 일괄 적용 (XML/Java 설정)\n- TransactionTemplate으로 코드에서 직접 경계 지정",
+    "example": "TransactionTemplate 예 (특정 구간만 트랜잭션):\ntransactionTemplate.execute(status -> {\n  repository.updateStatus(id, \"PROCESSING\");\n  return null;\n});\n\nreadOnly = true:\n- JPA는 변경 감지(dirty checking) 생략\n- 드라이버/설정에 따라 읽기 복제본으로 라우팅\n- DB 세션을 읽기 전용으로 설정하면 실수로 쓰기를 해도 DB가 막음",
+    "sub": "Spring"
+  },
+  {
+    "id": 89,
+    "front": "@Transactional이 적용되지 않거나 롤백되지 않는 경우?",
+    "back": "1) 같은 클래스 내부 호출 (self-invocation)\n-> this.method()는 프록시를 안 거쳐서 무시됨\n\n2) 체크 예외 (Checked Exception)\n-> 기본적으로 롤백 안 됨. rollbackFor = Exception.class 지정 필요\n\n3) 예외를 catch로 삼킴\n-> 프록시가 예외를 못 봐서 커밋됨\n\n4) private 메서드\n-> 프록시가 가로챌 수 없음\n\n5) 트랜잭션 안의 외부 호출\n-> 외부 API는 롤백 불가, 커넥션을 오래 점유",
+    "example": "self-invocation 해결 방법:\n1) 별도 클래스(빈)로 분리\n2) TransactionTemplate으로 직접 경계 지정\n3) 자기 자신 프록시 주입 (권장 X)\n\n예외 삼킴 예:\n@Transactional\npublic void send() {\n  try {\n    pushClient.send(list); // 실패\n  } catch (Exception e) {\n    log.error(\"실패\", e); // 롤백 안 됨 + 작업은 정상 종료로 보임\n  }\n}\n-> 실패를 기록하거나 다시 던져야 함",
+    "sub": "Spring"
+  },
+  {
+    "id": 90,
+    "front": "트랜잭션 전파(Propagation): REQUIRED vs REQUIRES_NEW?",
+    "back": "REQUIRED (기본값):\n- 바깥 트랜잭션이 있으면 참여, 없으면 새로 시작\n- 안쪽에서 예외가 나면 바깥까지 rollback-only로 표시됨\n\nREQUIRES_NEW:\n1) 바깥 트랜잭션 일시 중단 (suspend)\n2) 커넥션 풀에서 새 커넥션으로 별도 물리 트랜잭션 시작\n3) 안쪽 작업 후 즉시 커밋\n4) 바깥 트랜잭션 재개 (resume)\n\n특징:\n- 커밋이 독립적: 바깥이 롤백돼도 안쪽 결과는 남음\n- 예외는 독립적이지 않음: 잡지 않으면 바깥으로 전파\n- 서로의 미커밋 데이터는 안 보임",
+    "example": "언제 REQUIRES_NEW?\n- 바깥이 실패해도 남아야 하는 기록 (발송 상태, 감사 로그, 실패 이력)\n\n주의점:\n1) 커넥션을 2개 사용 -> 동시 호출이 많으면 커넥션 풀 고갈 가능\n2) 바깥이 이미 같은 행을 UPDATE해 락을 잡았다면\n   안쪽 UPDATE가 그 락을 기다림 -> 락 대기 타임아웃\n\n기타 전파: SUPPORTS, MANDATORY, NESTED(세이브포인트), NOT_SUPPORTED, NEVER",
+    "sub": "Spring"
+  },
+  {
+    "id": 91,
+    "front": "트랜잭션 격리 수준 4가지와 발생하는 문제?",
+    "back": "READ UNCOMMITTED\n- 남는 문제: Dirty Read (커밋 안 된 값 읽기)\n\nREAD COMMITTED (Oracle, PostgreSQL 기본)\n- 막는 것: Dirty Read\n- 남는 문제: Non-Repeatable Read (같은 조회가 다른 값)\n\nREPEATABLE READ (MySQL InnoDB 기본)\n- 막는 것: + Non-Repeatable Read\n- 남는 문제: Phantom Read (InnoDB는 갭 락으로 대부분 막음)\n\nSERIALIZABLE\n- 전부 막음, 동시성 크게 떨어짐",
+    "example": "주의:\nREAD UNCOMMITTED를 통계 조회에 쓰기도 하지만\n금액처럼 정확해야 하는 곳에는 쓰면 안 됨.\nInnoDB는 일반 SELECT가 원래 잠금 없이 읽기 때문에 얻는 이득도 크지 않음.\n\n면접 한 줄:\n\"MySQL 기본은 REPEATABLE READ, Oracle·PostgreSQL 기본은 READ COMMITTED입니다.\"",
+    "sub": "트랜잭션·동시성"
+  },
+  {
+    "id": 92,
+    "front": "MVCC(다중 버전 동시성 제어)란?",
+    "back": "Multi-Version Concurrency Control\n\n데이터를 변경할 때 이전 버전을 undo 영역에 남겨두고,\n일반 SELECT는 잠금 없이 스냅샷(이전 버전)을 읽는 방식.\n\n-> 읽기가 쓰기를 막지 않고, 쓰기가 읽기를 막지 않음\n\n스냅샷 시점:\n- REPEATABLE READ (MySQL): 트랜잭션의 첫 조회 시점\n- READ COMMITTED: 문장(쿼리)마다 새 스냅샷\n\nOracle, MySQL InnoDB, PostgreSQL 모두 MVCC 사용",
+    "example": "동시성 함정:\n두 요청이 동시에 '남은 자리 1개'를 일반 SELECT로 조회\n-> 둘 다 스냅샷에서 1개를 봄\n-> 둘 다 등록 성공 (초과 등록)\n\n해결:\n1) SELECT ... FOR UPDATE로 행 잠금 후 다시 확인\n2) 조건부 UPDATE + 영향 행 수 확인\n3) 유니크 제약",
+    "sub": "트랜잭션·동시성"
+  },
+  {
+    "id": 93,
+    "front": "공유 락(S)과 배타 락(X)?",
+    "back": "공유 락 (Shared Lock, S)\n- SELECT ... FOR SHARE (MySQL 구문: LOCK IN SHARE MODE)\n- 다른 트랜잭션도 읽을 수 있음, 쓰기는 못 함\n\n배타 락 (Exclusive Lock, X)\n- SELECT ... FOR UPDATE, UPDATE, DELETE\n- 다른 트랜잭션의 쓰기와 FOR UPDATE를 막음\n- 일반 SELECT(MVCC 스냅샷)는 막지 않음\n\n락 해제 시점:\n트랜잭션이 커밋 또는 롤백될 때",
+    "example": "FOR UPDATE 주의점:\n1) 락을 잡은 채 외부 API를 기다리면 안 됨\n   -> 다른 요청이 전부 대기\n2) InnoDB는 인덱스 레코드에 락을 검\n   -> 조건 컬럼에 인덱스가 없으면 훑은 행 전체를 잠가\n      사실상 테이블 락처럼 됨\n\nBEGIN;\nSELECT * FROM seat WHERE id = 10 FOR UPDATE;\n-- 남은 자리 다시 확인 후 등록\nCOMMIT;",
+    "sub": "트랜잭션·동시성"
+  },
+  {
+    "id": 94,
+    "front": "낙관적 락 vs 비관적 락?",
+    "back": "비관적 락 (Pessimistic):\n- 충돌이 날 거라 보고 먼저 잠그고 작업\n- SELECT ... FOR UPDATE, 분산 락\n- 충돌이 잦고 실패 비용이 클 때 (마지막 자리, 재고)\n\n낙관적 락 (Optimistic):\n- 충돌이 드물다고 보고 잠그지 않음\n- 저장 시점에 충돌 감지: 버전 컬럼 또는 상태 조건\n- UPDATE ... WHERE id = ? AND version = ?\n- 바뀐 행이 0이면 충돌 -> 재시도 또는 실패 안내\n- 충돌이 드물 때 처리량이 좋음",
+    "example": "낙관적 락 예:\nUPDATE product\n   SET stock = stock - 1, version = version + 1\n WHERE id = 1 AND version = 7;\n-> affected rows = 0 이면 다른 요청이 먼저 수정함\n\nJPA: @Version 필드로 자동 처리\n-> 충돌 시 OptimisticLockException",
+    "sub": "트랜잭션·동시성"
+  },
+  {
+    "id": 95,
+    "front": "조건부 UPDATE로 동시성을 처리하는 방법은?",
+    "back": "상태 전이 조건을 UPDATE의 WHERE에 넣고,\n영향받은 행 수(affected rows)로 성공 여부를 판단.\n\n-> 조회 후 판단(check-then-act)의 경쟁 조건을 없애는 가장 단순한 방법\n-> DB가 행 단위로 원자적으로 처리하므로 서버가 여러 대여도 동작\n\n0건이면:\n이미 다른 요청이 처리한 것 -> 실패 또는 '이미 처리됨' 안내",
+    "example": "재고 차감:\nUPDATE stock SET qty = qty - 1\n WHERE product_id = ? AND qty >= 1;\n-> 0건이면 품절\n\n쿠폰 1회 사용:\nUPDATE coupon SET used = 'Y'\n WHERE coupon_id = ? AND used = 'N';\n\n정원 제한:\nUPDATE party SET joined = joined + 2\n WHERE id = ? AND joined + 2 <= capacity;\n\n상태 머신:\nUPDATE reservation SET status = 'ACCEPTED'\n WHERE id = ? AND status = 'PROPOSED';",
+    "sub": "트랜잭션·동시성"
+  },
+  {
+    "id": 96,
+    "front": "데드락(Deadlock)이란? 어떻게 예방하나?",
+    "back": "두 트랜잭션이 서로가 가진 락을 기다리며 영원히 진행하지 못하는 상태.\n\n예:\nT1: A 행 잠금 -> B 행 잠금 대기\nT2: B 행 잠금 -> A 행 잠금 대기\n\nDB의 대응:\n데드락을 감지하면 한쪽 트랜잭션을 강제 롤백\n\n예방:\n1) 여러 행을 잠글 때 항상 같은 순서로 잠금 (예: PK 오름차순)\n2) 트랜잭션을 짧게 유지\n3) 필요한 인덱스를 두어 잠그는 범위 최소화\n4) 롤백된 트랜잭션은 재시도",
+    "example": "운영체제 데드락 4조건과 연결:\n1) 상호 배제\n2) 점유 대기\n3) 비선점\n4) 순환 대기\n-> 같은 순서로 잠그는 것은 '순환 대기'를 깨는 방법\n\nMySQL 확인: SHOW ENGINE INNODB STATUS (LATEST DETECTED DEADLOCK)",
+    "sub": "트랜잭션·동시성"
+  },
+  {
+    "id": 97,
+    "front": "N+1 문제란? 어떻게 해결하나?",
+    "back": "목록 1번 조회 후, 각 항목마다 연관 데이터를 다시 조회해\n쿼리가 1 + N번 나가는 문제.\nORM(JPA 지연 로딩, Prisma 반복 조회)에서 자주 발생.\n\n해결:\n1) IN 조건으로 한 번에 조회 후 애플리케이션에서 Map으로 매칭\n2) JOIN / fetch join (JPA: JOIN FETCH, @EntityGraph)\n3) 배치 사이즈 (hibernate.default_batch_fetch_size)\n\n대상이 매우 많으면:\nIN 목록과 메모리가 커지므로 1,000건 단위로 나눠 조회",
+    "example": "개선 전: 구독 N건 조회 후 건마다 사용자 + 카드 조회 -> 1 + 2N번\n\n개선 후 (3번):\nconst subs = await findSubscriptions();\nconst userIds = subs.map(s => s.userId);\nconst users = await findUsers({ id: { in: userIds } });\nconst cards = await findCards({ userId: { in: userIds } });\nconst userMap = new Map(users.map(u => [u.id, u]));\n\n주의: 쿼리 횟수 감소와 응답 시간 감소는 다름 -> 측정값이 있을 때만 '빨라졌다'고 말하기",
+    "sub": "트랜잭션·동시성"
+  },
+  {
+    "id": 98,
+    "front": "복합 인덱스 컬럼 순서는 어떻게 정하나?",
+    "back": "1) 왼쪽부터 사용됨 (Leftmost Prefix)\n   (a, b, c) 인덱스는 a / a,b / a,b,c 조건에서 사용\n   b 단독 조건에는 사용 안 됨\n\n2) 등호(=) 조건 컬럼을 앞에, 범위(BETWEEN, >, <) 조건 컬럼을 뒤에\n   -> 범위 조건 뒤의 컬럼은 인덱스 탐색에 못 씀\n\n3) 카디널리티(값의 종류)가 높은 컬럼을 앞에 (등호 조건끼리 비교할 때)\n\n4) ORDER BY 컬럼까지 맞추면 정렬(filesort) 생략 가능\n\n5) 커버링 인덱스: 조회 컬럼까지 인덱스에 있으면 테이블을 안 읽음",
+    "example": "예: 특정 사용자의 최근 알림 조회\nSELECT * FROM notification\n WHERE user_id = ? AND created_at >= ?\n ORDER BY created_at DESC;\n\n-> (user_id, created_at) 순서가 맞음\n   user_id는 등호, created_at은 범위 + 정렬\n\n실행 계획 확인: EXPLAIN (type, key, rows, Extra)\n- type: ALL이면 풀 스캔\n- Extra: Using filesort, Using index(커버링)\n\n오래된 데이터가 쌓여 느리면: 인덱스와 함께 아카이빙(이관)도 검토",
+    "sub": "트랜잭션·동시성"
+  },
+  {
+    "id": 99,
+    "front": "Oracle과 MySQL의 주요 차이?",
+    "back": "기본 격리 수준: Oracle READ COMMITTED / MySQL REPEATABLE READ\n페이징: Oracle ROWNUM, 12c+ OFFSET FETCH / MySQL LIMIT\n자동 증가: Oracle SEQUENCE (12c+ IDENTITY) / MySQL AUTO_INCREMENT\n문자열 결합: Oracle || / MySQL CONCAT()\nNULL 처리: Oracle NVL, 빈 문자열 = NULL / MySQL IFNULL, 빈 문자열 != NULL\n날짜: Oracle SYSDATE, TO_CHAR / MySQL NOW(), DATE_FORMAT\n더미 테이블: Oracle FROM DUAL 필수 / MySQL 생략 가능\n계층 쿼리: Oracle CONNECT BY / MySQL WITH RECURSIVE (8.0)",
+    "example": "실무에서 체감하는 차이:\n1) 페이징 문법 (ROWNUM vs LIMIT, MSSQL은 TOP)\n2) Oracle은 빈 문자열을 NULL로 취급 -> 조건 비교 주의\n3) 커넥션 검증 쿼리\n   Oracle: SELECT 1 FROM dual\n   MySQL: SELECT 1\n\nPostgreSQL: 기본 READ COMMITTED, LIMIT/OFFSET, SERIAL/IDENTITY, || 결합",
+    "sub": "트랜잭션·동시성"
+  },
+  {
+    "id": 100,
+    "front": "at-most-once, at-least-once, exactly-once의 차이?",
+    "back": "메시지/작업 전달 보장 수준\n\nat-most-once (최대 한 번):\n- 실패해도 재시도 안 함\n- 중복은 없지만 누락 가능\n- 예: 처리 전에 '완료' 상태를 먼저 커밋\n\nat-least-once (최소 한 번):\n- 성공 확인까지 재시도\n- 누락은 없지만 중복 가능\n- 예: 처리 후 완료 커밋, 실패 시 다시 조회됨\n\nexactly-once (정확히 한 번):\n- 분산 환경에서 엄밀히 보장하기 어려움\n- 실무에서는 at-least-once + 멱등성으로 '효과상 한 번'을 만듦",
+    "example": "선택 기준:\n- 마케팅 문자: 같은 고객에게 여러 번 가는 피해가 큼 -> 중복 방지 우선 (at-most-once 성향)\n- 결제, 정산: 누락도 중복도 안 됨 -> 재시도 + 멱등 키 + 대사\n\n면접 주의:\n'한 번만 발송을 보장한다'고 단정하지 말고\n'at-most-once 성향으로 설계했고, 남은 위험은 이것이다'라고 말하기",
+    "sub": "결제·분산 처리"
+  },
+  {
+    "id": 101,
+    "front": "멱등성(Idempotency)과 멱등 키란?",
+    "back": "멱등성: 같은 요청을 여러 번 보내도 결과가 한 번 보낸 것과 같은 성질.\n\nHTTP 메서드:\n- 멱등: GET, PUT, DELETE\n- 비멱등: POST, PATCH(일반적으로)\n\n멱등 키 (Idempotency-Key):\n클라이언트가 요청마다 고유 키를 붙이고,\n서버(또는 PG)는 같은 키의 요청이 다시 오면 처리하지 않고 이전 결과를 반환.\n\n필요한 곳: 결제 승인, 빌링키 발급, 재시도가 있는 외부 호출",
+    "example": "구현 방법:\n1) 요청 키를 유니크 컬럼으로 저장 -> 중복 INSERT 실패로 감지\n2) 이미 처리된 주문이면 승인 호출 전에 기존 결과 반환\n3) 외부 API가 멱등 키를 지원하면 헤더로 전달\n   Idempotency-Key: {orderId}-{attempt 아님, 고정값}\n\n주의:\n키에 현재 시각을 넣으면 재요청마다 키가 달라져 중복 방지가 안 됨\n-> 같은 작업에는 항상 같은 키",
+    "sub": "결제·분산 처리"
+  },
+  {
+    "id": 102,
+    "front": "외부 결제(PG) 승인과 DB 저장을 어떻게 나누나?",
+    "back": "외부 PG 승인과 내부 DB 트랜잭션은 하나의 로컬 트랜잭션으로 원자성을 보장할 수 없음.\n\n일반적인 흐름:\n1) 결제 요청을 PENDING 상태로 먼저 저장 (커밋)\n2) 트랜잭션 밖에서 PG 승인 요청\n3) 승인 결과를 별도 트랜잭션에서 확정 (PAID)\n4) 승인 후 DB 확정 실패 -> 승인 취소(보상) 시도\n5) 취소도 실패 -> FAILED + 승인 시각 기록, 수동 확인 대상으로 남김\n\n승인 후 검증:\n클라이언트가 보낸 금액·주문번호를 믿지 말고 서버 주문 정보와 PG 응답을 대조",
+    "example": "왜 트랜잭션 밖에서 호출?\n1) 외부 응답을 기다리는 동안 DB 커넥션을 점유하지 않기 위해\n2) 외부 호출은 DB 롤백으로 취소되지 않기 때문\n\n외부 리소스 생성 후 DB 실패 (예: 빌링키 발급 성공, 카드 저장 실패):\n-> DB는 롤백돼도 외부 빌링키는 남음\n-> 삭제 API로 정리하는 보상 처리 + 정리 실패 건 기록",
+    "sub": "결제·분산 처리"
+  },
+  {
+    "id": 103,
+    "front": "외부 API 타임아웃이 나면 실패로 처리해도 되나? (결과 불명)",
+    "back": "안 됨. 타임아웃은 '실패'가 아니라 '결과를 모름'.\n상대 시스템에서는 승인됐는데 응답만 유실됐을 수 있음.\n\n처리 방법:\n1) 상태를 UNKNOWN(결과 불명)으로 따로 기록\n2) 주문번호/결제키로 결과 조회 API 호출해 실제 상태 확인\n3) 조회가 안 되면 망취소(해당 거래 취소 요청)로 정리\n4) 재시도는 멱등 키가 보장될 때만\n5) 정기적으로 대사(외부 거래내역과 내부 테이블 대조)",
+    "example": "망취소:\n승인 요청 후 응답을 못 받아 결제 여부가 불확실할 때\n해당 거래에 취소를 요청해 정리하는 것\n\n정산 대사 (Reconciliation):\nPG 거래내역과 내부 결제 테이블을 거래번호로 대조\n-> '승인됐지만 우리 DB엔 미반영' 건을 찾아냄\n\n상태 설계 예:\nPENDING -> APPROVING -> PAID / FAILED / UNKNOWN",
+    "sub": "결제·분산 처리"
+  },
+  {
+    "id": 104,
+    "front": "대량 발송·재처리를 안전하게 설계하려면?",
+    "back": "1) 상태를 세분화\n   대기(READY) -> 처리 중(PROCESSING) -> 성공(DONE) / 실패(FAILED) / 결과 불명(UNKNOWN)\n   '처리 전에 완료로 바꾸기'는 진행 중과 완료를 구분 못 함\n\n2) 원자적 선점\n   UPDATE ... SET status='PROCESSING' WHERE id=? AND status='READY'\n   영향 행이 1일 때만 처리 -> 서버 여러 대여도 중복 처리 방지\n\n3) 수신자(건)별 결과 기록 + 일정 단위로 커밋 (청크)\n   -> 중단돼도 안 보낸 대상부터 이어서 처리\n\n4) 외부 요청 식별자 저장 + 결과 조회/대사\n\n5) 멱등이 보장될 때만 자동 재시도",
+    "example": "흔한 실수:\n1) 수만 건을 하나의 긴 트랜잭션으로 처리\n   -> 타임아웃으로 롤백되면 '대기' 상태로 돌아가 전체가 재발송\n2) 외부 응답의 성공 여부를 확인하지 않고 성공 건수 증가\n3) 상태 UPDATE가 0건이어도 그대로 진행\n4) 예외를 catch로 삼켜 배치가 정상 종료로 보임\n   (소량 테스트에서는 재현 안 되는 버그가 많음)",
+    "sub": "결제·분산 처리"
+  },
+  {
+    "id": 105,
+    "front": "보상 트랜잭션과 SAGA 패턴은?",
+    "back": "여러 시스템(서비스, 외부 API)에 걸친 작업은 하나의 DB 트랜잭션으로 묶을 수 없음.\n\n보상 트랜잭션:\n이미 성공한 단계를 되돌리는 '반대 작업'을 실행\n(롤백이 아니라 취소 요청을 새로 보내는 것)\n\nSAGA 패턴:\n각 단계를 로컬 트랜잭션으로 처리하고, 실패하면 앞 단계들의 보상 작업을 역순으로 실행\n- Choreography: 이벤트로 각 서비스가 반응\n- Orchestration: 중앙 조정자가 순서와 보상을 지시",
+    "example": "예: 예약 + 외부 시스템 연동\n1) 외부 ERP에 예약 생성 (성공)\n2) 우리 DB 저장 또는 결제 (실패)\n3) 보상: 외부 ERP 예약 취소 요청\n\n보상도 실패할 수 있음\n-> 실패 상태와 원본 정보를 기록하고 재시도 또는 수동 처리 대상으로\n\n관련: Transactional Outbox 패턴\nDB 변경과 '보낼 이벤트'를 같은 트랜잭션에 저장 -> 별도 프로세스가 발행",
+    "sub": "결제·분산 처리"
+  },
+  {
+    "id": 106,
+    "front": "스케줄러와 배치의 차이? 폴링 워커란?",
+    "back": "스케줄: '언제' 실행할지\n(@Scheduled, cron, crontab)\n\n배치: 쌓인 데이터를 '어떻게' 한꺼번에 처리할지\n(대량 집계, 정산, 대량 발송)\n\n대부분은 '스케줄로 실행되는 배치'\n\n폴링 워커:\n1분, 30초 같은 짧은 주기로 처리할 건이 있는지 DB/Redis를 확인해 처리\n-> 메시지 큐(Kafka, RabbitMQ) 대신 쓰는 방식\n-> 단순하지만 주기만큼 지연, 빈 조회 비용",
+    "example": "@Scheduled 옵션:\n- cron = \"0 0 5 * * *\": 매일 05:00\n- fixedRate: 이전 실행 시작 기준 간격 (실행이 길면 밀려서 연달아 실행)\n- fixedDelay: 이전 실행 종료 후 일정 간격\n\n주의:\n워커로 설계한 작업에 갑자기 대량 데이터가 들어오면\n사실상 대량 배치가 되어 트랜잭션·타임아웃 문제가 드러남",
+    "sub": "배치·스케줄러"
+  },
+  {
+    "id": 107,
+    "front": "Spring Batch의 청크(Chunk) 처리란?",
+    "back": "정해진 개수(예: 1,000건)씩 읽고(Reader) -> 처리하고(Processor) -> 쓰고(Writer) -> 커밋을 반복.\n\n장점:\n1) 실패해도 이미 커밋된 청크는 남음\n2) 실행 이력(JobRepository 메타 테이블)으로 실패 지점부터 재시작\n3) 긴 트랜잭션 하나로 처리하지 않아 타임아웃/롤백 범위가 작음\n4) skip, retry 정책 설정 가능\n\n구조: Job > Step > (Chunk: Reader / Processor / Writer)",
+    "example": "언제 Spring Batch?\n- 대상이 많고 중간 실패 시 재시작이 필요한 작업 (대량 발송, 정기결제, 정산)\n\n언제 @Scheduled만?\n- 짧은 폴링, 단순 집계\n\n@Bean\npublic Step sendStep() {\n  return stepBuilder.<Target, Message>chunk(1000, txManager)\n    .reader(reader()).processor(processor()).writer(writer())\n    .build();\n}",
+    "sub": "배치·스케줄러"
+  },
+  {
+    "id": 108,
+    "front": "서버가 여러 대일 때 스케줄러 중복 실행은 어떻게 막나?",
+    "back": "@Scheduled는 서버마다 각자 실행됨.\nJVM 안의 플래그(AtomicBoolean, synchronized)는 한 서버 안에서만 유효.\n\n방법:\n1) 분산 락: ShedLock (DB 또는 Redis에 실행 락 기록)\n2) 대상 선점: UPDATE ... SET status='PROCESSING', worker=? WHERE status='READY' LIMIT n\n   -> 각 서버가 선점한 건만 처리\n3) 배치 전용 서버를 한 대만 운영 (가장 단순, 단일 장애점)\n4) 리더 선출 (쿠버네티스 CronJob, Quartz 클러스터)",
+    "example": "ShedLock 예:\n@Scheduled(cron = \"0 */5 * * * *\")\n@SchedulerLock(name = \"billing\", lockAtMostFor = \"10m\")\npublic void billing() { ... }\n\n주의:\nAPI 서버와 배치 서버를 분리(RUN_MODE 등)하는 것은 역할 분리일 뿐\n같은 배치의 중복 실행 방지는 아님\n\n결제 배치라면 락 + 멱등 키 + 대상 선점을 함께 고려",
+    "sub": "배치·스케줄러"
+  },
+  {
+    "id": 109,
+    "front": "Cache-Aside 패턴과 캐시 무효화 전략은?",
+    "back": "Cache-Aside (Lazy Loading):\n1) 캐시 조회\n2) 없으면(miss) DB 조회\n3) 결과를 캐시에 저장 후 반환\n\n무효화 전략:\n1) TTL(만료 시간): 일정 시간 후 자동 삭제\n2) 변경 시점 무효화: 데이터 수정 시 캐시 키 삭제\n3) 둘 다: 무효화 + 긴 TTL을 안전장치로\n\n다른 패턴:\n- Write-Through: 쓸 때 캐시와 DB 동시 갱신\n- Write-Behind: 캐시에 쓰고 DB는 나중에 비동기 반영",
+    "example": "변경 시점 무효화가 맞는 경우:\n배너, 공지처럼 관리자 수정으로만 바뀌는 데이터 -> 변경 시점이 명확\n\nTTL 없이 무효화만 쓰면:\n무효화를 한 군데라도 빠뜨리면 오래된 데이터가 영구히 남음\n\n미리 계산 캐시:\n무거운 집계를 배치가 주기적으로 계산해 TTL과 함께 저장, API는 읽기만\n\nRedis 장애 시: 예외를 분리하고 DB로 바로 조회 (캐시는 보조)",
+    "sub": "캐시·Redis"
+  },
+  {
+    "id": 110,
+    "front": "캐시 스탬피드(Cache Stampede)란?",
+    "back": "인기 키의 캐시가 만료되는 순간 많은 요청이 동시에 miss\n-> 모두 DB를 조회하고 캐시를 다시 채움\n-> DB 부하 급증, 캐시 중복 저장\n\n해결:\n1) 락: SET NX로 한 요청만 DB 조회 후 캐시 채우기, 나머지는 잠시 대기 후 재조회\n2) 미리 갱신: 만료 전에 백그라운드에서 갱신 (배치로 미리 계산)\n3) TTL에 랜덤 값(jitter)을 더해 동시에 만료되지 않게\n4) 목록 캐시는 임시 키에 다 쓴 뒤 RENAME으로 한 번에 교체",
+    "example": "목록 캐시를 항목마다 RPUSH로 채우면:\n- 동시 miss 시 같은 항목이 중복으로 쌓임\n- 채우는 도중 조회하면 일부만 보임\n\n개선:\nRPUSH tmp:key a b c ...   (한 번에)\nRENAME tmp:key key        (원자적 교체)\n또는 MULTI/EXEC 트랜잭션",
+    "sub": "캐시·Redis"
+  },
+  {
+    "id": 111,
+    "front": "Redis SET NX로 중복 요청/분산 락을 구현할 때 주의점?",
+    "back": "SET key value NX EX 2\n- NX: 키가 없을 때만 저장 -> 첫 요청만 성공\n- EX: 만료 시간 -> 락을 못 풀어도 자동 해제\n\n짧은 시간의 연타 방지에 유용 (이벤트 응모, 버튼 연타)\n\n락으로 쓸 때 주의:\n1) 작업이 만료 시간보다 길면 락이 먼저 풀려 다른 요청이 들어옴\n2) 내 락이 아닌데 지울 수 있음\n   -> 값에 요청 ID를 넣고, 지울 때 확인 (Lua 스크립트로 원자적으로)\n3) 실무에서는 Redisson 같은 라이브러리 (watchdog으로 만료 연장)",
+    "example": "Spring Data Redis:\nBoolean ok = redisTemplate.opsForValue()\n    .setIfAbsent(\"roulette:\" + userId, \"1\", Duration.ofSeconds(2));\nif (!Boolean.TRUE.equals(ok)) throw new DuplicateRequestException();\n\n주의:\n2초 연타 방지는 '하루 1회 참여' 같은 실제 제한을 대신하지 못함\n-> 실제 제한은 DB 기준으로 다시 확인\n\n서버 메모리 기반 rate limiter(Bucket4j 등)는 인스턴스마다 따로 계산\n-> 여러 대면 Redis 기반 버킷 필요",
+    "sub": "캐시·Redis"
+  },
+  {
+    "id": 112,
+    "front": "Redis List를 큐로 쓸 때의 문제와 대안은?",
+    "back": "패턴: 요청 중에 로그를 LPUSH로 쌓고, 배치가 POP해서 DB에 저장\n-> 요청 처리 중 DB 쓰기 부담을 줄이는 버퍼\n\n문제:\n1) POP 후 처리 전에 장애가 나면 데이터 유실\n2) 일부만 DB에 저장된 뒤 재처리하면 중복 저장\n3) 대기열 중복 확인을 전체 조회 + contains로 하면 O(N), 비원자적\n\n대안:\n1) LMOVE로 '처리 중' 리스트로 옮긴 뒤 완료 시 삭제\n2) Redis Stream + 컨슈머 그룹 + ACK (미확인 메시지 재처리)\n3) 로그 고유 ID + DB 유니크 키로 중복 방지\n4) 중복 확인은 Set(SADD)",
+    "example": "Redis 자료구조 용도:\n- String: 캐시, 카운터, 락\n- List: 간단한 큐, 최근 목록\n- Set: 중복 없는 집합, 대기열 중복 확인\n- Sorted Set: 랭킹, 시간순 정렬\n- Hash: 객체 필드 저장\n- Stream: 메시지 큐 (컨슈머 그룹, ACK)\n\n본격적인 메시지 처리가 필요하면 Kafka, RabbitMQ 검토",
+    "sub": "캐시·Redis"
+  },
+  {
+    "id": 113,
+    "front": "해시와 암호화의 차이? 대칭키와 비대칭키는?",
+    "back": "해시 (단방향):\n- 원문을 고정 길이 값으로 변환, 되돌릴 수 없음\n- 같은 입력 -> 항상 같은 결과\n- 용도: 비밀번호 저장, 무결성 확인\n- 예: SHA-256, SHA-512 (MD5는 충돌 발견으로 보안 용도 금지)\n\n암호화 (양방향):\n- 키가 있으면 복호화 가능\n- 용도: 다시 꺼내 써야 하는 개인정보 (이름, 전화번호, 이메일)\n\n대칭키: 암호화·복호화에 같은 키 (AES, SEED, ARIA) - 빠름\n비대칭키: 공개키로 암호화, 개인키로 복호화 (RSA, ECC) - 느림, 키 교환·서명에 사용",
+    "example": "HTTPS는 둘을 함께 씀:\n비대칭키로 대칭키를 안전하게 교환 -> 이후 통신은 대칭키로 암호화\n\nAES 키 길이:\nAES-128/192/256 = 키 16/24/32바이트\n(클래스 이름이 AES256이어도 키가 16바이트면 AES-128)\n\nSEED, ARIA: 한국 표준 대칭키 암호, 국내 금융·카드사 연동에서 요구",
+    "sub": "보안"
+  },
+  {
+    "id": 114,
+    "front": "AES 블록 암호 모드(ECB, CBC, GCM)와 IV란?",
+    "back": "ECB:\n블록마다 독립 암호화 -> 같은 평문 블록은 같은 암호문\n-> 패턴이 노출되어 취약. Java에서 \"AES\"만 지정하면 기본값이 ECB\n\nCBC:\n앞 블록의 암호문을 다음 블록에 섞음, IV 필요\n\nGCM:\n암호화 + 무결성 검증(인증 태그)을 함께 제공, 현재 권장\n\nIV (초기화 벡터):\n첫 블록에 섞는 값. 매번 랜덤이어야 안전\n고정 IV -> 같은 평문이 같은 암호문 (패턴 노출)\n\n패딩(PKCS5/7): 블록 크기(16바이트)에 맞게 남는 공간을 채우는 규칙",
+    "example": "안전한 사용:\nCipher cipher = Cipher.getInstance(\"AES/GCM/NoPadding\");\nbyte[] iv = new byte[12];\nnew SecureRandom().nextBytes(iv);   // 매번 랜덤\n-> 암호문과 함께 IV를 저장 (IV는 비밀이 아님)\n\n결정적 암호화:\n같은 평문 -> 항상 같은 암호문\n보안은 약해지지만 암호화된 상태로 WHERE 검색 가능 (트레이드오프)\n\n키 관리: 코드에 하드코딩 금지 -> 환경변수, KMS",
+    "sub": "보안"
+  },
+  {
+    "id": 115,
+    "front": "비밀번호는 어떻게 저장해야 하나? (솔트, BCrypt)",
+    "back": "원칙: 암호화(복호화 가능)가 아니라 해시로 저장\n\n솔트 (salt):\n사용자마다 다른 랜덤 값을 붙여 해시\n-> 같은 비밀번호도 해시가 달라져 레인보우 테이블 방어\n(모든 사용자에게 같은 값을 붙이면 엄밀히는 pepper)\n\n비밀번호 전용 해시: BCrypt, scrypt, Argon2\n- 솔트 내장\n- 일부러 느리게(cost factor) 만들어 무차별 대입 방어\n-> SHA-256 한 번보다 BCrypt 권장",
+    "example": "Spring Security:\nPasswordEncoder encoder = new BCryptPasswordEncoder();\nString hash = encoder.encode(rawPassword);\nencoder.matches(rawPassword, hash);\n\n비밀번호 정책 (ISMS-P 등):\n- 로그인 5회 실패 시 잠금\n- 주기적 변경, 최근 N개 재사용 금지\n- 연속 문자, 키보드 배열, 아이디 포함 금지\n- 관리자 2차 인증(OTP)",
+    "sub": "보안"
+  },
+  {
+    "id": 116,
+    "front": "HMAC이란?",
+    "back": "Hash-based Message Authentication Code\n\n비밀키 + 해시 함수로 만든 서명 값.\n-> '키를 가진 쪽이 만들었고, 내용이 변조되지 않았다'를 증명\n\n해시만 쓰면: 누구나 같은 해시를 다시 만들 수 있음 (변조 후 재계산 가능)\nHMAC: 비밀키가 없으면 올바른 서명을 만들 수 없음\n\n용도:\n- API 요청 서명 (헤더에 서명 값)\n- 웹훅 검증 (보낸 쪽이 진짜인지)\n- JWT 서명 (HS256, HS512)",
+    "example": "웹훅 검증 예:\n1) 서버가 받은 body로 HMAC-SHA256(secret, body) 계산\n2) 요청 헤더의 서명 값과 비교\n3) 비교는 상수 시간 비교 (타이밍 공격 방지)\n   MessageDigest.isEqual(a, b)\n\n서명 != 암호화:\n서명된 데이터는 여전히 누구나 읽을 수 있음",
+    "sub": "보안"
+  },
+  {
+    "id": 117,
+    "front": "JWT의 구조와 HS256 vs RS256?",
+    "back": "구조: 헤더.페이로드.서명 (각각 Base64URL 인코딩)\n- 헤더: 서명 알고리즘 {\"alg\":\"HS256\",\"typ\":\"JWT\"}\n- 페이로드(클레임): sub(주체), exp(만료), iat(발급) 등\n- 서명: 헤더 + 페이로드를 키로 서명한 값\n\n서명은 변조 방지용이지 암호화가 아님\n-> 페이로드는 누구나 디코딩 가능, 민감 정보 넣지 말 것\n\nHS256 (대칭, HMAC): 발급·검증 서버가 같은 비밀키 공유\nRS256 (비대칭, RSA): 개인키로 서명, 공개키로 검증\n-> 여러 서비스가 검증만 해야 할 때 유리 (비밀키를 나눠줄 필요 없음)",
+    "example": "Refresh Token 저장:\nDB에 저장해 로그아웃·탈취 시 무효화\n평문보다 해시해서 저장하는 것이 더 안전\n계정당 하나만 유효하게 하면 재발급 시 이전 토큰 무효화\n\n검증 순서 주의:\n서명 검증 전에 디코딩한 값을 신뢰해서 쓰면 안 됨\n(jwt.decode가 아니라 jwt.verify)\n\n전달 방식: Authorization: Bearer 헤더, 또는 HttpOnly 쿠키",
+    "sub": "보안"
+  },
+  {
+    "id": 118,
+    "front": "IDOR 취약점이란? 권한 체크 원칙은?",
+    "back": "IDOR (Insecure Direct Object Reference):\nURL이나 요청의 ID만 바꿔 다른 사람의 데이터에 접근할 수 있는 취약점\n예: /orders/1001 -> /orders/1002 로 바꾸니 남의 주문이 보임\n\n대응: 토큰(세션)의 사용자와 조회 대상의 소유자를 서버에서 비교\n\n권한 체크 원칙 3가지:\n1) 화면에서 숨기는 것은 권한이 아님 -> 최종 확인은 API(서버)에서\n2) 범위 값(회사, 매장, 테넌트)은 클라이언트가 아니라 서버가 정함 -> 세션/DB에서 가져오고 요청 값으로 덮어쓰지 않음\n3) 기능 권한(메뉴)과 데이터 범위(행)는 다른 문제 -> 따로 막고, 가능하면 DB(RLS)까지",
+    "example": "흔한 실수:\n- 화면 진입만 권한 체크하고 ajax API는 통과시킴\n- isAdmin 같은 권한 값을 요청 body에서 받음\n- 로그인 실패로 사용자 ID가 비었을 때 조건 없이 전체 목록 반환\n\n개인정보 보호 (ISMS-P):\n- 관리자 화면·엑셀 기본 마스킹\n- 개인정보 조회·다운로드 감사 로그 (누가, 언제, 무엇을)\n- 로그에 비밀번호 등 민감 값 마스킹\n- 예외 응답에 SQL·내부 정보 노출 금지",
+    "sub": "보안"
+  },
+  {
+    "id": 119,
+    "front": "PostgreSQL RLS(Row Level Security)란?",
+    "back": "행 단위 보안: DB가 정책(POLICY)에 따라 조회·수정 가능한 행을 제한.\n멀티테넌트에서 코드에 WHERE tenant_id 조건을 빠뜨려도 다른 회사 데이터가 나오지 않게 DB에서 막음.\n\n구성:\n1) ALTER TABLE ... ENABLE ROW LEVEL SECURITY\n2) FORCE ROW LEVEL SECURITY (테이블 소유자에게도 적용)\n3) CREATE POLICY ... USING (tenant_id = current_setting('app.tenant_id')::uuid)\n4) 요청마다 컨텍스트 설정: SET LOCAL app.tenant_id = '...'\n\n컨텍스트가 없으면: 조회 0건, 쓰기 거부 (기본 거부)",
+    "example": "SET LOCAL을 쿼리와 같은 트랜잭션에서 실행해야 하는 이유:\n1) SET LOCAL은 해당 트랜잭션 범위에서만 유지됨\n2) 커넥션 풀 환경에서 설정과 쿼리를 따로 실행하면 다른 커넥션에서 실행될 수 있음\n3) set_config(..., true)는 SET LOCAL과 같고, 바인딩 파라미터를 쓸 수 있음\n4) 세션 단위(SET)로 설정하면 커넥션 재사용 시 이전 요청의 테넌트 값이 남을 위험\n\nawait prisma.$transaction(async (tx) => {\n  await tx.$queryRaw`SELECT set_config('app.tenant_id', ${tenantId}, true)`;\n  return tx.order.findMany();\n});\n\n여러 테넌트를 처리하는 배치: 전체 조회만 관리자 컨텍스트, 개별 처리는 해당 테넌트 컨텍스트",
+    "sub": "보안"
+  },
+  {
+    "id": 120,
+    "front": "XSS 공격과 대응 방법은?",
+    "back": "XSS (Cross-Site Scripting):\n공격자가 넣은 스크립트가 다른 사용자의 브라우저에서 실행되는 공격\n\n종류:\n- Stored: DB에 저장된 게시글 등에 스크립트\n- Reflected: URL 파라미터가 그대로 응답에 반영\n- DOM-based: 프론트 JS가 입력값을 innerHTML로 삽입\n\n대응:\n1) 출력 시 이스케이프 (< > & \" ' 를 HTML 엔티티로)\n2) innerHTML 대신 textContent\n3) 쿠키에 HttpOnly (JS에서 세션 쿠키 접근 차단)\n4) CSP(Content-Security-Policy) 헤더",
+    "example": "서버 측 적용 위치:\n- 요청 필터(입력 단계)로 막으면 JSON body는 변환이 안 되는 경우가 있음\n- 응답을 JSON으로 만들 때 Jackson에서 HTML 특수문자 이스케이프\n- JSP 출력: <c:out>, fn:escapeXml\n- React: 기본 이스케이프 (dangerouslySetInnerHTML 주의)\n\nCSRF와 구분:\nXSS는 스크립트 실행, CSRF는 사용자가 의도치 않은 요청을 보내게 하는 것 (CSRF 토큰, SameSite 쿠키로 대응)",
+    "sub": "보안"
+  },
+  {
+    "id": 121,
+    "front": "merge와 rebase의 차이는?",
+    "back": "merge:\n두 브랜치 이력을 합치는 머지 커밋을 만듦\n-> 이력이 그대로 남음 (분기와 합류가 보임)\n\nrebase:\n내 커밋들을 대상 브랜치의 끝으로 옮겨 다시 씀\n-> 이력이 일직선, 커밋 해시가 바뀜\n\n원칙:\n공유된 브랜치에서는 rebase 금지 (다른 사람 이력과 어긋남, 강제 푸시 필요)\n개인 브랜치 정리에만 rebase 사용",
+    "example": "# merge\ngit checkout main\ngit merge feature/login\n\n# rebase (개인 브랜치에서)\ngit checkout feature/login\ngit rebase main\n\n잘못 머지했을 때:\n- 공유 브랜치: git revert (되돌리는 커밋 추가)\n- 개인 브랜치: git reset + 강제 푸시\n\n강제 푸시는 --force 대신 --force-with-lease (남의 커밋 덮어쓰기 방지)",
+    "sub": "Git·협업"
+  },
+  {
+    "id": 122,
+    "front": "Git 브랜치 전략과 충돌 해결 원칙은?",
+    "back": "Git Flow:\nfeature -> develop -> release -> main (+ hotfix)\n릴리스 주기가 있는 프로젝트\n\n환경별 브랜치:\nfeature -> dev -> qa -> staging -> master(운영)\nQA를 통과한 기능만 운영으로\n단점: 브랜치마다 머지 상태가 달라짐 (qa엔 있는데 master엔 없음)\n\n트렁크 기반:\nmain 하나 + 짧은 기능 브랜치 + CI/CD + 기능 플래그\n배포가 잦은 팀",
+    "example": "충돌 해결 원칙:\n1) 머지 전 대상 브랜치를 먼저 받아 내 브랜치에서 해결 (공용 브랜치에서 해결 X)\n2) 충돌 구간은 양쪽 변경 의도 확인 (커밋 메시지, 티켓, 작성자에게 질문)\n   '내 것으로 덮기' 금지\n3) 해결 후 빌드 + 해당 기능 테스트\n4) 브랜치 이름에 티켓 번호 (feature/#1234-login) -> 작업과 이슈 연결\n\n팀 규모와 배포 빈도에 따라 맞는 전략이 다름",
+    "sub": "Git·협업"
   }
 ]

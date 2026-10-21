@@ -48,7 +48,15 @@
     <!-- 카테고리 페이지 -->
     <div id="page-category" class="page">
       <div class="action-bar">
-        <button id="btn-quiz" class="btn accent" style="flex:1">퀴즈 시작</button>
+        <button class="btn accent quiz-mode" data-quiz-mode="review">
+          복습 퀴즈<span class="quiz-count"></span>
+        </button>
+        <button class="btn danger quiz-mode" data-quiz-mode="wrong">
+          오답만<span class="quiz-count"></span>
+        </button>
+        <button class="btn quiz-mode" data-quiz-mode="all">
+          전체 랜덤<span class="quiz-count"></span>
+        </button>
       </div>
       <div id="sub-tabs" class="sub-tabs hidden"></div>
       <div id="card-count" class="card-count"></div>
@@ -64,11 +72,15 @@
       <div class="flashcard" id="flashcard">
         <div class="flashcard-inner">
           <div class="flashcard-front">
-            <p id="quiz-front"></p>
+            <div class="face-content">
+              <p id="quiz-front"></p>
+            </div>
           </div>
           <div class="flashcard-back">
-            <p id="quiz-back"></p>
-            <p id="quiz-example" class="example-text"></p>
+            <div class="face-content">
+              <p id="quiz-back"></p>
+              <p id="quiz-example" class="example-text"></p>
+            </div>
           </div>
         </div>
       </div>

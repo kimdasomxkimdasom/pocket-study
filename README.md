@@ -26,7 +26,9 @@ pocket-study/
 │       ├── english_word.json
 │       ├── english_conversation.json
 │       ├── english_pattern.json
-│       └── cs.json
+│       ├── cs.json
+│       ├── coding_test.json
+│       └── programming.json
 ├── docs/                      # GitHub Pages 배포용 (public/ 복사본)
 ├── package.json
 └── tsconfig.json
@@ -92,7 +94,10 @@ git push
 
 ## 주요 기능
 
-- **플래시카드 퀴즈**: 카드를 탭하면 뒤집어서 답 확인
-- **학습 기록**: 정답/오답 횟수를 localStorage에 저장
-- **4개 카테고리**: 영어 단어, 영어 회화, 영어 패턴, CS 공부
+- **플래시카드 퀴즈**: 카드를 탭하면 뒤집어서 답 확인. 긴 답변은 카드 안에서 스크롤, 코드 예문은 고정폭 글꼴로 표시
+- **간격 반복 학습 (Leitner 박스)**: 맞히면 레벨(Lv.1~5)이 오르고 틀리면 Lv.1로. 레벨별 복습 간격 0/1/3/7/14일
+- **퀴즈 모드**: 복습 퀴즈(복습할 때가 된 카드 + 새 카드), 오답만, 전체 랜덤
+- **학습 기록**: 정답/오답 횟수, 레벨, 다음 복습일을 localStorage에 저장
+- **해시 라우팅**: 휴대폰 뒤로가기, 새로고침, 즐겨찾기(`#/c/cs` 등) 지원
+- **6개 카테고리**: 영어 단어, 영어 회화, 영어 패턴, CS 공부, 코딩테스트, 프로그래밍 언어
 - **모바일 최적화**: 다크 테마, 터치 친화적 UI
