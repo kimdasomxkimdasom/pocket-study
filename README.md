@@ -1,8 +1,9 @@
 # Pocket Study
 
-모바일 학습용 웹앱. 영어(단어, 회화, 패턴)와 CS 지식을 플래시카드 형태로 공부할 수 있다.
+모바일 학습용 웹앱. 
+영어(단어, 회화, 패턴)와 CS 지식을 플래시카드 형태로 공부할 수 있다.
 
-**배포 URL**: https://kimdasomxkimdasom.github.io/pocket-study/
+**URL**: https://kimdasomxkimdasom.github.io/pocket-study/
 
 ## 기술 스택
 
